@@ -1,7 +1,7 @@
 import logging
 import sys
 from flask import Flask, redirect, url_for, request, render_template
-from sqlalchemy import null
+import sqlite3 as sql
 app = Flask(__name__)
 #unique username
 global_user_id = None
@@ -38,13 +38,27 @@ def signup_again(msg):
 
 @app.route('/signup',methods = ['POST', 'GET'])
 def signup():
-   user = request.form['nm']
    password = request.form['password']
    password2 = request.form['password2']
+   email = request.form['email']
+   user = request.form['nm']
+   age = request.form['age']
    if password == password2:
       global_user_id = user
       app.logger.info(global_user_id)
-      return redirect(url_for('success',name = user))
+      try:
+         with sql.connect("MovieAuctionDB.db") as con:
+            cur = con.cursor()
+            cur.execute("INSERT INTO USER (EMAIL, USERNAME, PASSWORD, AGE ) VALUES(?,?,?,?);",(email,user,password,age))
+            con.commit()
+            msg = "Record successfully added"
+      except:
+         con.rollback()
+         return redirect(url_for('signup_again', msg='Error in entered information'))
+      finally:
+         con.close()
+         return redirect(url_for('success',name = user))
+
    else:
       return redirect(url_for('signup_again', msg='Passwords do not match.'))
 
