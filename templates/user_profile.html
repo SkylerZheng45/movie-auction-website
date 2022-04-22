@@ -1,0 +1,27 @@
+<html>
+   <body>
+      <h2>{{msg}}</h2>
+      <form action = "http://localhost:5000/user_profile" method = "post">
+         <h1>Account Info</h1>
+         <p>Name:</p>
+         <input type = "text" name = "nm" value = {{username}}>
+         <p>Email:</p>
+         <input type = "text" name = "email" value = {{email}}>
+         <p>Age:</p>
+         <input type = "text" name = "age" value = {{age}}>
+         <p>Card Info:</p>
+         <p>card number</p>
+         <input type = "text" name = "card" value = {{card}}>
+         <p>card expiration date</p>
+         <input type = "text" name = "card_exp_date" value = {{card_exp_date}}>
+         <p>billing address</p>
+         <input type = "text" name = "billing_addr" value = {{billing_addr}}>
+         <p>zip code</p>
+         <input type = "text" name = "zip_code" value = {{zip_code}}>
+         <br>
+         <br>
+         <input type = "submit" value = "update">
+      </form>
+      <a href="{{ url_for('home') }}">Return to Home</a>
+   </body>
+</html>
