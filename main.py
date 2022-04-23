@@ -8,7 +8,9 @@ logging.basicConfig(level=logging.DEBUG)
 #unique user_id
 global global_user_id
 
-@app.route('/')
+cart = [] 
+
+@app.route('/home')
 def home():
    # find username if global_user_id is defined
    try:
@@ -21,7 +23,17 @@ def home():
          rows = cur.fetchall()
          return redirect(url_for('success',name = rows[0]['username']))
    except:
-      return render_template('index.html')
+      return render_template('index.html',cart=cart, cartCounter=len(cart))
+
+@app.route('/addToCart/<title>', methods=['GET'])
+def addToCart(title) :
+   #adding to cart
+   cart.append(title)
+   print(cart)
+   return redirect(url_for('home',))
+   #return render_template('index.html', cart=cart, cartCounter=len(cart))
+
+@app.route('/home/removeFromCart')
 
 # login
 @app.route('/<name>')

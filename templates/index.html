@@ -22,7 +22,7 @@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">Home</a></li>
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="{{url_for('home')}}">Home</a></li>
                         <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
@@ -41,7 +41,7 @@
                         <button class="btn btn-outline-dark" type="submit">
                             <i class="bi-cart-fill me-1"></i>
                             Cart
-                            <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                            <span class="badge bg-dark text-white ms-1 rounded-pill">{{cartCounter}}</span>
                         </button>
                     </form>
                 </div>
@@ -105,7 +105,7 @@
                             </div>
                             <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a></div>
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{url_for('addToCart',title='Minons')}}">Add to cart</a></div>
                             </div>
                         </div>
                     </div>
@@ -127,7 +127,7 @@
                             </div>
                             <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a></div>
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{url_for('addToCart',title='Morbius')}}">Add to cart</a></div>
                             </div>
                         </div>
                     </div>
@@ -154,7 +154,7 @@
                             </div>
                             <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a></div>
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{url_for('addToCart',title='Sonic The Hedgehog')}}">Add to cart</a></div>
                             </div>
                         </div>
                     </div>
@@ -168,7 +168,7 @@
                             <div class="card-body p-4">
                                 <div class="text-center">
                                     <!-- Product name-->
-                                    <h5 class="fw-bolder">GhostBusters Afterlife</h5>
+                                    <h5 class="fw-bolder">Ghostbusters: Afterlife</h5>
                                     <!-- Product price-->
                                     <span class="text-muted text-decoration-line-through">$50.00</span>
                                     $25.00
@@ -176,7 +176,7 @@
                             </div>
                             <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a></div>
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{url_for('addToCart',title='Ghostbusters: Afterlife')}}">Add to cart</a></div>
                             </div>
                         </div>
                     </div>
@@ -209,7 +209,7 @@
                             <div class="card-body p-4">
                                 <div class="text-center">
                                     <!-- Product name-->
-                                    <h5 class="fw-bolder">Shang Chi</h5>
+                                    <h5 class="fw-bolder">Shang-Chi and the Legend of the Ten Rings</h5>
                                     <!-- Product reviews-->
                                     <div class="d-flex justify-content-center small text-warning mb-2">
                                         <div class="bi-star-fill"></div>
@@ -225,7 +225,7 @@
                             </div>
                             <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a></div>
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{url_for('addToCart',title='Shang-Chi and the Legend of the Ten Rings')}}">Add to cart</a></div>
                             </div>
                         </div>
                     </div>
@@ -237,7 +237,7 @@
                             <div class="card-body p-4">
                                 <div class="text-center">
                                     <!-- Product name-->
-                                    <h5 class="fw-bolder">My My Neighbor Totoro</h5>
+                                    <h5 class="fw-bolder">My Neighbor Totoro</h5>
                                     <!-- Product reviews-->
                                     <div class="d-flex justify-content-center small text-warning mb-2">
                                         <div class="bi-star-fill"></div>
@@ -252,7 +252,7 @@
                             </div>
                             <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a></div>
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{url_for('addToCart',title='My Neighbor Totoro')}}">Add to cart</a></div>
                             </div>
                         </div>
                     </div>
