@@ -68,14 +68,14 @@
                             <div class="card-body p-4">
                                 <div class="text-center">
                                     <!-- Product name-->
-                                    <h5 class="fw-bolder">Spider Man No Way Home</h5>
+                                    <h5 class="fw-bolder">{{movieInfo[0][1]}}</h5>
                                     <!-- Product price-->
                                     $40.00 - $80.00
                                 </div>
                             </div>
                             <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">View options</a></div>
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{url_for('addToCart',cardNum = 0)}}">Add to cart</a></div>
                             </div>
                         </div>
                     </div>
@@ -105,7 +105,7 @@
                             </div>
                             <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{url_for('addToCart',title='Minons')}}">Add to cart</a></div>
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{url_for('addToCart',cardNum = 1)}}">Add to cart</a></div>
                             </div>
                         </div>
                     </div>
@@ -127,7 +127,7 @@
                             </div>
                             <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{url_for('addToCart',title='Morbius')}}">Add to cart</a></div>
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{url_for('addToCart',cardNum = 2)}}">Add to cart</a></div>
                             </div>
                         </div>
                     </div>
@@ -154,7 +154,7 @@
                             </div>
                             <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{url_for('addToCart',title='Sonic The Hedgehog')}}">Add to cart</a></div>
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{url_for('addToCart',cardNum = 3)}}">Add to cart</a></div>
                             </div>
                         </div>
                     </div>
@@ -176,7 +176,7 @@
                             </div>
                             <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{url_for('addToCart',title='Ghostbusters: Afterlife')}}">Add to cart</a></div>
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{url_for('addToCart',cardNum = 4)}}">Add to cart</a></div>
                             </div>
                         </div>
                     </div>
@@ -195,7 +195,7 @@
                             </div>
                             <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">View options</a></div>
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{url_for('addToCart',cardNum = 5)}}">Add to cart</a></div>
                             </div>
                         </div>
                     </div>
@@ -225,7 +225,7 @@
                             </div>
                             <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{url_for('addToCart',title='Shang-Chi and the Legend of the Ten Rings')}}">Add to cart</a></div>
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{url_for('addToCart',cardNum = 6)}}">Add to cart</a></div>
                             </div>
                         </div>
                     </div>
@@ -252,7 +252,7 @@
                             </div>
                             <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{url_for('addToCart',title='My Neighbor Totoro')}}">Add to cart</a></div>
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{url_for('addToCart',cardNum = 7)}}">Add to cart</a></div>
                             </div>
                         </div>
                     </div>

@@ -7,11 +7,16 @@ app = Flask(__name__)
 logging.basicConfig(level=logging.DEBUG)
 #unique user_id
 global global_user_id
-
-cart = [] 
+global movieInfoCards
+cart = []
 
 @app.route('/home')
 def home():
+   global movieInfoCards 
+   with sql.connect("MovieAuctionDB.db") as con:
+      cur = con.cursor()
+      cur.execute("SELECT * FROM MOVIEINFO LIMIT 8")
+      movieInfoCards = cur.fetchall()
    # find username if global_user_id is defined
    try:
       global global_user_id
@@ -23,13 +28,16 @@ def home():
          rows = cur.fetchall()
          return redirect(url_for('success',name = rows[0]['username']))
    except:
-      return render_template('index.html',cart=cart, cartCounter=len(cart))
+      return render_template('index.html',cart=cart, cartCounter=len(cart),movieInfo = movieInfoCards)
 
-@app.route('/addToCart/<title>', methods=['GET'])
-def addToCart(title) :
+@app.route('/addToCart/<cardNum>', methods=['GET'])
+def addToCart(cardNum) :
    #adding to cart
-   cart.append(title)
-   print(cart)
+   global movieInfoCards
+   global cart
+
+   cart.append(movieInfoCards[int(cardNum)])
+   print("Cart contents",cart)
    return redirect(url_for('home',))
    #return render_template('index.html', cart=cart, cartCounter=len(cart))
 
