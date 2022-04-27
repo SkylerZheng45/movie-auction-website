@@ -7,6 +7,7 @@ app = Flask(__name__)
 logging.basicConfig(level=logging.DEBUG)
 #unique user_id
 global global_user_id
+global username
 global movieInfoCards
 cart = []
 
@@ -18,6 +19,7 @@ def home():
       cur.execute("SELECT * FROM MOVIEINFO LIMIT 8")
       movieInfoCards = cur.fetchall()
    # find username if global_user_id is defined
+   print(movieInfoCards)
    try:
       global global_user_id
       app.logger.info(global_user_id)
@@ -34,11 +36,9 @@ def home():
 def addToCart(cardNum) :
    #adding to cart
    global movieInfoCards
-   global cart
-
    cart.append(movieInfoCards[int(cardNum)])
    print("Cart contents",cart)
-   return redirect(url_for('home',))
+   return redirect(url_for('success',name = username))
    #return render_template('index.html', cart=cart, cartCounter=len(cart))
 
 @app.route('/home/removeFromCart')
@@ -46,7 +46,12 @@ def addToCart(cardNum) :
 # login
 @app.route('/<name>')
 def success(name):
-   return render_template('index.html', username = name, movieInfo = movieInfoCards)
+   global movieInfoCards 
+   with sql.connect("MovieAuctionDB.db") as con:
+      cur = con.cursor()
+      cur.execute("SELECT * FROM MOVIEINFO LIMIT 8")
+      movieInfoCards = cur.fetchall()
+   return render_template('index.html', username = name,cartCounter=len(cart), movieInfo = movieInfoCards)
 
 @app.route('/login')
 def login_page():
@@ -69,6 +74,8 @@ def login():
          if rows[0]['password'] == password:
             global global_user_id
             global_user_id = rows[0]['user_id']
+            global username
+            username = rows[0]['username']
             app.logger.info(global_user_id)
             return redirect(url_for('success',name = rows[0]['username']))
          else:
