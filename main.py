@@ -10,7 +10,7 @@ global global_user_id
 global movieInfoCards
 cart = []
 
-@app.route('/home')
+@app.route('/')
 def home():
    global movieInfoCards 
    with sql.connect("MovieAuctionDB.db") as con:
@@ -46,7 +46,7 @@ def addToCart(cardNum) :
 # login
 @app.route('/<name>')
 def success(name):
-   return render_template('index.html', username = name)
+   return render_template('index.html', username = name, movieInfo = movieInfoCards)
 
 @app.route('/login')
 def login_page():
