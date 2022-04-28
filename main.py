@@ -38,8 +38,13 @@ def addToCart(cardNum) :
    global movieInfoCards
    cart.append(movieInfoCards[int(cardNum)])
    print("Cart contents",cart)
-   return redirect(url_for('success',name = username))
-   #return render_template('index.html', cart=cart, cartCounter=len(cart))
+   try: 
+      print(username)
+   except Exception as e:
+      return redirect(url_for('success',name = username))
+   finally:
+      return render_template('login.html')
+
 
 @app.route('/home/removeFromCart')
 
