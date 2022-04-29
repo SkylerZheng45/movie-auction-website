@@ -9,10 +9,12 @@ logging.basicConfig(level=logging.DEBUG)
 global global_user_id
 global username
 global movieInfoCards
-cart = []
+global cart
 
 @app.route('/')
 def home():
+   global cart
+   cart = [] 
    global movieInfoCards 
    with sql.connect("MovieAuctionDB.db") as con:
       cur = con.cursor()
@@ -33,18 +35,17 @@ def home():
       return render_template('index.html',cart=cart, cartCounter=len(cart),movieInfo = movieInfoCards)
 
 @app.route('/addToCart/<cardNum>', methods=['GET'])
-def addToCart(cardNum) :
+def addToCart(cardNum):
    #adding to cart
-   global movieInfoCards
-   cart.append(movieInfoCards[int(cardNum)])
-   print("Cart contents",cart)
+   global cart
    try: 
-      print(username)
-   except Exception as e:
+      cart.append(movieInfoCards[int(cardNum)])
+      print("Cart contents with username: ",username,cart)
       return redirect(url_for('success',name = username))
-   finally:
-      return render_template('login.html')
-
+   except Exception as e:
+      cart = []
+      return render_template('login_or_signup.html',msg="You must login or signup before adding an item to cart")
+   
 
 @app.route('/home/removeFromCart')
 
