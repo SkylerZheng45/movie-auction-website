@@ -24,10 +24,11 @@
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                         <li class="nav-item"><a class="nav-link active" aria-current="page" href="{{url_for('home')}}">Home</a></li>
                         <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="{{ url_for('addMovie') }}">Add Movie</a></li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="#!">All Products</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('showAllProducts')}}">All Products</a></li>
                                 <li><hr class="dropdown-divider" /></li>
                                 <li><a class="dropdown-item" href="#!">Popular Items</a></li>
                                 <li><a class="dropdown-item" href="#!">New Arrivals</a></li>
@@ -36,6 +37,7 @@
                         <li class="nav-item"><a class="nav-link active" aria-current="page" href="{{ url_for('login') }}">Login</a></li>
                         <li class="nav-item"><a class="nav-link active" aria-current="page" href="{{ url_for('signup') }}">Signup</a></li>
                         <li class="nav-item"><a class="nav-link active" href="{{ url_for('user_profile_page') }}">{{username}}</a></li>
+
                     </ul>
                     <form class="d-flex">
                         <button class="btn btn-outline-dark" type="submit">
@@ -70,7 +72,7 @@
                                     <!-- Product name-->
                                     <h5 class="fw-bolder">{{movieInfo[0][1]}}</h5>
                                     <!-- Product price-->
-                                    $40.00 - $80.00
+                                    ${{movieInfo[0][4]}}
                                 </div>
                             </div>
                             <!-- Product actions-->
@@ -99,8 +101,8 @@
                                         <div class="bi-star-fill"></div>
                                     </div>
                                     <!-- Product price-->
-                                    <span class="text-muted text-decoration-line-through">$20.00</span>
-                                    $18.00
+                                    <span class="text-muted text-decoration-line-through">$40.00</span>
+                                    ${{movieInfo[1][4]}}
                                 </div>
                             </div>
                             <!-- Product actions-->
@@ -122,7 +124,7 @@
                                     <h5 class="fw-bolder">Morbius</h5>
                                     <!-- Product price-->
                                     <span class="text-muted text-decoration-line-through">$50.00</span>
-                                    $25.00
+                                    ${{movieInfo[2][4]}}
                                 </div>
                             </div>
                             <!-- Product actions-->
@@ -149,7 +151,7 @@
                                         <div class="bi-star-fill"></div>
                                     </div>
                                     <!-- Product price-->
-                                    $40.00
+                                    ${{movieInfo[3][4]}}
                                 </div>
                             </div>
                             <!-- Product actions-->
@@ -171,7 +173,7 @@
                                     <h5 class="fw-bolder">Ghostbusters: Afterlife</h5>
                                     <!-- Product price-->
                                     <span class="text-muted text-decoration-line-through">$50.00</span>
-                                    $25.00
+                                    ${{movieInfo[4][4]}}
                                 </div>
                             </div>
                             <!-- Product actions-->
@@ -190,7 +192,7 @@
                                     <!-- Product name-->
                                     <h5 class="fw-bolder">Artemis Fowl</h5>
                                     <!-- Product price-->
-                                    $120.00 - $280.00
+                                    ${{movieInfo[5][4]}}
                                 </div>
                             </div>
                             <!-- Product actions-->
@@ -219,8 +221,8 @@
                                         <div class="bi-star-fill"></div>
                                     </div>
                                     <!-- Product price-->
-                                    <span class="text-muted text-decoration-line-through">$20.00</span>
-                                    $18.00
+                                    <span class="text-muted text-decoration-line-through">$70.00</span>
+                                    ${{movieInfo[6][4]}}
                                 </div>
                             </div>
                             <!-- Product actions-->
@@ -247,7 +249,7 @@
                                         <div class="bi-star-fill"></div>
                                     </div>
                                     <!-- Product price-->
-                                    $40.00
+                                    ${{movieInfo[7][4]}}
                                 </div>
                             </div>
                             <!-- Product actions-->

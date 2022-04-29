@@ -7,17 +7,22 @@ app = Flask(__name__)
 logging.basicConfig(level=logging.DEBUG)
 #unique user_id
 global global_user_id
+global username
 global movieInfoCards
-cart = []
+global cart
 
+#default home page
 @app.route('/')
 def home():
+   global cart
+   cart = [] 
    global movieInfoCards 
    with sql.connect("MovieAuctionDB.db") as con:
       cur = con.cursor()
       cur.execute("SELECT * FROM MOVIEINFO LIMIT 8")
       movieInfoCards = cur.fetchall()
    # find username if global_user_id is defined
+   print(movieInfoCards)
    try:
       global global_user_id
       app.logger.info(global_user_id)
@@ -30,23 +35,74 @@ def home():
    except:
       return render_template('index.html',cart=cart, cartCounter=len(cart),movieInfo = movieInfoCards)
 
+
+
+#adding item to cart
 @app.route('/addToCart/<cardNum>', methods=['GET'])
-def addToCart(cardNum) :
-   #adding to cart
-   global movieInfoCards
+def addToCart(cardNum):
+   #adding to cart try catching to see if logged in
    global cart
+   try: 
+      cart.append(movieInfoCards[int(cardNum)])
+      print("Cart contents with username: ",username,cart)
+      return redirect(url_for('success',name = username))
+   except Exception as e:
+      cart = []
+      return render_template('login_or_signup.html',msg="You must login or signup before adding an item to cart")
+   
+#remove from cart
+@app.route('/removeFromCart')
 
-   cart.append(movieInfoCards[int(cardNum)])
-   print("Cart contents",cart)
-   return redirect(url_for('home',))
-   #return render_template('index.html', cart=cart, cartCounter=len(cart))
+@app.route('/addMovie')
+def addMoviePage():
+   return render_template('movie_entry.html', msg='')
 
-@app.route('/home/removeFromCart')
+#adding an item for sale 
+@app.route('/addMovie',methods = ['POST', 'GET'])
+def addMovie():
+   name = request.form['name']
+   year = request.form['year']
+   desc = request.form['desc']
+   price = request.form['price']
+   imgurl = request.form['imgurl']
+   if len(name) != 0 and len(year) != 0 and len(desc) != 0 and len(price)!=0:
+      try:
+         with sql.connect("MovieAuctionDB.db") as con:
+            # insert info
+            cur = con.cursor()
+            # INSERT INTO MOVIEINFO (NAME,YEAR,DESC,PRICE) VALUES 
+            if len(imgurl)==0:
+               cur.execute("INSERT INTO MOVIEINFO (NAME,YEAR,DESC,PRICE) VALUES(?,?,?,?);",(name,year,desc,price))
+            else:         
+               cur.execute("INSERT INTO MOVIEINFO (NAME,YEAR,DESC,PRICE,IMGURL) VALUES(?,?,?,?,?);",(name,year,desc,price,imgurl))
+            con.commit()
+            msg = "Record successfully added"
+         return redirect(url_for('success',name = username))
+      except Exception as e:
+         con.rollback()
+         app.logger.info(e)
+         return render_template('movie_entry.html', msg='Error in entered information exception found')
+   else:
+      return render_template('movie_entry.html', msg='Error in entered information, Please fill out again')
+
+@app.route('/showAllProducts')
+def showAllProducts():
+   with sql.connect("MovieAuctionDB.db") as con:
+      cur = con.cursor()
+      cur.execute("SELECT * FROM MOVIEINFO")
+      movieInfoCards = cur.fetchall()
+      print("Number of Movies queryed", len(movieInfoCards))
+      return render_template('all_products.html',cart=cart, cartCounter=len(cart),movieInfo = movieInfoCards)
 
 # login
 @app.route('/<name>')
 def success(name):
-   return render_template('index.html', username = name, movieInfo = movieInfoCards)
+   global movieInfoCards 
+   with sql.connect("MovieAuctionDB.db") as con:
+      cur = con.cursor()
+      cur.execute("SELECT * FROM MOVIEINFO LIMIT 8")
+      movieInfoCards = cur.fetchall()
+   return render_template('index.html', username = name,cartCounter=len(cart), movieInfo = movieInfoCards)
 
 @app.route('/login')
 def login_page():
@@ -69,6 +125,8 @@ def login():
          if rows[0]['password'] == password:
             global global_user_id
             global_user_id = rows[0]['user_id']
+            global username
+            username = rows[0]['username']
             app.logger.info(global_user_id)
             return redirect(url_for('success',name = rows[0]['username']))
          else:

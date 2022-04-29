@@ -1,0 +1,20 @@
+<html>
+   <body>
+      <h2>{{msg}}</h2>
+      <form action = "http://localhost:5000/addMovie" method = "post">
+         <h1>Add Movie to Sell</h1>
+         <p>Movie Name:</p>
+         <p><input type = "text" name = "name" /></p>
+         <p>Movie year release:</p>
+         <p><input type = "number" name = "year" /></p>
+         <p>Movie Description:</p>
+         <p><input type = "text" name = "desc" /></p>
+         <p>Movie Price:</p>
+         <p><input type = "number" step="0.01" name = "price" /></p>
+         <p>Optional Image Url for picture:</p>
+         <p><input type = "url" name = "imgurl" /></p>
+         <p><input type = "submit" value = "submit" /></p>
+      </form>
+      <a href="{{ url_for('home') }}">Return to Home</a>
+   </body>
+</html>
