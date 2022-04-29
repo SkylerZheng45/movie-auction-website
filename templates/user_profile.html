@@ -1,27 +1,56 @@
-<html>
-   <body>
-      <h2>{{msg}}</h2>
-      <form action = "http://localhost:5000/user_profile" method = "post">
-         <h1>Account Info</h1>
-         <p>Name:</p>
-         <input type = "text" name = "nm" value = {{username}}>
-         <p>Email:</p>
-         <input type = "text" name = "email" value = {{email}}>
-         <p>Age:</p>
-         <input type = "text" name = "age" value = {{age}}>
-         <p>Card Info:</p>
-         <p>card number</p>
-         <input type = "text" name = "card" value = {{card}}>
-         <p>card expiration date</p>
-         <input type = "text" name = "card_exp_date" value = {{card_exp_date}}>
-         <p>billing address</p>
-         <input type = "text" name = "billing_addr" value = {{billing_addr}}>
-         <p>zip code</p>
-         <input type = "text" name = "zip_code" value = {{zip_code}}>
-         <br>
-         <br>
-         <input type = "submit" value = "update">
-      </form>
-      <a href="{{ url_for('home') }}">Return to Home</a>
-   </body>
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/styles.css') }}">
+<!DOCTYPE html>
+<html lang="en">
+   <header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h2>{{msg}}</h2>
+            <form action = "http://localhost:5000/user_profile" method = "post">
+               <h1>Account Info</h1>
+               <br>
+               <p>
+               <label for="nm">Name:</label>
+               <input type = "text" name = "nm" value = {{username}}>
+                </p>
+  
+               <p>
+               <label for="email">Email: &nbsp</label>
+               <input type = "text" name = "email" value = {{email}}>
+                </p>
+               
+               <p>
+               <label for="age">Age:   &nbsp&nbsp</label>
+               <input type = "text" name = "age" value = {{age}}>
+                </p>
+               <br>
+                <p class="lead fw-normal text-white-50 mb-0">Card Info:</p>
+               <br>
+               <p>
+               <label for="card">Card Number:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</label>
+               <input type = "text" name = "card" value = {{card}}>
+                </p>
+               
+               <p>
+               <label for="card_exp_date">Valid Thru (mm/dd/yyyy):</label>
+               <input type = "text" name = "card_exp_date" value = {{card_exp_date}}>
+                </p>
+               
+               <p>
+               <label for="billing_addr">Billing Address:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</label>
+               <input type = "text" name = "billing_addr" value = {{billing_addr}}>
+                </p>
+               
+               <p>
+               <label for="zip_code">Zip Code:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</label>
+               <input type = "text" name = "zip_code" value = {{zip_code}}>
+                </p>
+               
+               <br>
+               <br>
+               <input type = "submit" value = "update">
+            </form>
+            <a href="{{ url_for('home') }}">Return to Home</a>
+        </div>
+    </div>
+</header>
 </html>
