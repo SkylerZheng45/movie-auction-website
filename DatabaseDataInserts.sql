@@ -25,9 +25,9 @@ INSERT INTO MOVIEINFO (NAME,YEAR,DESC,PRICE,IMGURL) VALUES
 ("Shang-Chi and the Legend of the Ten Rings",2022,"Shang-Chi, the master of weaponry-based Kung Fu, is forced to confront his past after being drawn into the Ten Rings organization.",59.99,"https://resizing.flixster.com/qbD0DVLUfUiZkETMZROfsJkjm4w=/fit-in/80x126/v2/https://resizing.flixster.com/o3Oul5Xmgiu8no89gblCUYWJB0s=/ems.ZW1zLXByZC1hc3NldHMvbW92aWVzLzY0NWJhN2RhLTg1Y2YtNDBmYS04YjQ0LWI5MWY4NmIwOGRjMy5qcGc=");
 
 INSERT INTO MOVIEINFO (NAME,YEAR,DESC,PRICE,IMGURL) VALUES 
-("My Neighbor Totoro",1988,"When two girls move to the country to be near their ailing mother, they have adventures with the wondrous forest spirits who live nearby.",12.99,https://resizing.flixster.com/zl240CPBBowAZfldk-8FaX4dGuw=/206x305/v2/https://flxt.tmsimg.com/NowShowing/120448/120448_aa.jpg);
+("My Neighbor Totoro",1988,"When two girls move to the country to be near their ailing mother, they have adventures with the wondrous forest spirits who live nearby.",12.99,"https://resizing.flixster.com/zl240CPBBowAZfldk-8FaX4dGuw=/206x305/v2/https://flxt.tmsimg.com/NowShowing/120448/120448_aa.jpg");
 
 
--- UPDATE MOVIEINFO SET 
--- IMGURL="https://resizing.flixster.com/zl240CPBBowAZfldk-8FaX4dGuw=/206x305/v2/https://flxt.tmsimg.com/NowShowing/120448/120448_aa.jpg"
--- where MOVIE_ID=8;
+UPDATE MOVIEINFO SET 
+IMGURL="https://resizing.flixster.com/zl240CPBBowAZfldk-8FaX4dGuw=/206x305/v2/https://flxt.tmsimg.com/NowShowing/120448/120448_aa.jpg"
+where MOVIE_ID=8;

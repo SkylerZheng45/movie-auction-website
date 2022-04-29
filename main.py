@@ -55,7 +55,7 @@ def addToCart(cardNum):
 
 @app.route('/addMovie')
 def addMoviePage():
-   return render_template('movie_entry.html')
+   return render_template('movie_entry.html', msg='')
 
 #adding an item for sale 
 @app.route('/addMovie',methods = ['POST', 'GET'])
@@ -65,22 +65,25 @@ def addMovie():
    desc = request.form['desc']
    price = request.form['price']
    imgurl = request.form['imgurl']
-   try:
-      with sql.connect("MovieAuctionDB.db") as con:
-         # insert info
-         cur = con.cursor()
-         # INSERT INTO MOVIEINFO (NAME,YEAR,DESC,PRICE) VALUES 
-         if len(imgurl)==0:
-            cur.execute("INSERT INTO MOVIEINFO (NAME,YEAR,DESC,PRICE) VALUES(?,?,?,?);",(name,year,desc,price))
-         else:         
-            cur.execute("INSERT INTO MOVIEINFO (NAME,YEAR,DESC,PRICE,IMGURL) VALUES(?,?,?,?,?);",(name,year,desc,price,imgurl))
-         con.commit()
-         msg = "Record successfully added"
-      return redirect(url_for('success',name = username))
-   except Exception as e:
-      con.rollback()
-      app.logger.info(e)
-      return redirect(url_for('signup_again', msg='Error in entered information'))
+   if len(name) != 0 and len(year) != 0 and len(desc) != 0 and len(price)!=0:
+      try:
+         with sql.connect("MovieAuctionDB.db") as con:
+            # insert info
+            cur = con.cursor()
+            # INSERT INTO MOVIEINFO (NAME,YEAR,DESC,PRICE) VALUES 
+            if len(imgurl)==0:
+               cur.execute("INSERT INTO MOVIEINFO (NAME,YEAR,DESC,PRICE) VALUES(?,?,?,?);",(name,year,desc,price))
+            else:         
+               cur.execute("INSERT INTO MOVIEINFO (NAME,YEAR,DESC,PRICE,IMGURL) VALUES(?,?,?,?,?);",(name,year,desc,price,imgurl))
+            con.commit()
+            msg = "Record successfully added"
+         return redirect(url_for('success',name = username))
+      except Exception as e:
+         con.rollback()
+         app.logger.info(e)
+         return render_template('movie_entry.html', msg='Error in entered information exception found')
+   else:
+      return render_template('movie_entry.html', msg='Error in entered information, Please fill out again')
 
 @app.route('/showAllProducts')
 def showAllProducts():
