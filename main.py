@@ -11,6 +11,7 @@ global username
 global movieInfoCards
 global cart
 
+#default home page
 @app.route('/')
 def home():
    global cart
@@ -34,9 +35,12 @@ def home():
    except:
       return render_template('index.html',cart=cart, cartCounter=len(cart),movieInfo = movieInfoCards)
 
+
+
+#adding item to cart
 @app.route('/addToCart/<cardNum>', methods=['GET'])
 def addToCart(cardNum):
-   #adding to cart
+   #adding to cart try catching to see if logged in
    global cart
    try: 
       cart.append(movieInfoCards[int(cardNum)])
@@ -46,8 +50,46 @@ def addToCart(cardNum):
       cart = []
       return render_template('login_or_signup.html',msg="You must login or signup before adding an item to cart")
    
+#remove from cart
+@app.route('/removeFromCart')
 
-@app.route('/home/removeFromCart')
+@app.route('/addMovie')
+def addMoviePage():
+   return render_template('movie_entry.html')
+
+#adding an item for sale 
+@app.route('/addMovie',methods = ['POST', 'GET'])
+def addMovie():
+   name = request.form['name']
+   year = request.form['year']
+   desc = request.form['desc']
+   price = request.form['price']
+   imgurl = request.form['imgurl']
+   try:
+      with sql.connect("MovieAuctionDB.db") as con:
+         # insert info
+         cur = con.cursor()
+         # INSERT INTO MOVIEINFO (NAME,YEAR,DESC,PRICE) VALUES 
+         if len(imgurl)==0:
+            cur.execute("INSERT INTO MOVIEINFO (NAME,YEAR,DESC,PRICE) VALUES(?,?,?,?);",(name,year,desc,price))
+         else:         
+            cur.execute("INSERT INTO MOVIEINFO (NAME,YEAR,DESC,PRICE,IMGURL) VALUES(?,?,?,?,?);",(name,year,desc,price,imgurl))
+         con.commit()
+         msg = "Record successfully added"
+      return redirect(url_for('success',name = username))
+   except Exception as e:
+      con.rollback()
+      app.logger.info(e)
+      return redirect(url_for('signup_again', msg='Error in entered information'))
+
+@app.route('/showAllProducts')
+def showAllProducts():
+   with sql.connect("MovieAuctionDB.db") as con:
+      cur = con.cursor()
+      cur.execute("SELECT * FROM MOVIEINFO")
+      movieInfoCards = cur.fetchall()
+      print("Number of Movies queryed", len(movieInfoCards))
+      return render_template('all_products.html',cart=cart, cartCounter=len(cart),movieInfo = movieInfoCards)
 
 # login
 @app.route('/<name>')
