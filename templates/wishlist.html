@@ -1,0 +1,13 @@
+<html>
+   <body>
+      <h2></h2>
+      <form action = "http://localhost:5000/wishlist" method = "post">
+         <h1>Wishlist</h1>
+         {% for row in rows %}
+            <p>{{row["MOVIE_ID"]}}</p>
+            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{ url_for('deleteFromWishlist',wish_id=row['WISHLIST_ID'],movie=row['MOVIE_ID'] ) }}">Remove</a></div>
+         {% endfor %}
+      </form>
+      <a href="{{ url_for('home') }}">Return to Home</a>
+   </body>
+</html>
