@@ -342,6 +342,84 @@ def review():
       con.rollback()
       return redirect(url_for('home'))
 
+@app.route('/checkout',methods = ['POST', 'GET'])
+def checkout():
+   # get account info from the database
+   with sql.connect("MovieAuctionDB.db") as con:
+      con.row_factory = sql.Row
+      cur = con.cursor()
+      cur.execute(f"select * from USER where user_id = '{global_user_id}';")
+      rows = cur.fetchall()
+      app.logger.info(global_user_id)
+      app.logger.info(len(rows))
+      username = rows[0]['username']
+      email = rows[0]['email']
+      card = rows[0]['card']
+      card_exp_date = rows[0]['card_exp_date']
+      billing_addr = rows[0]['billing_addr']
+      zip_code = rows[0]['zip_code']
+      # print(cart)
+      while(len(cart)<8):
+         cart.append(('','','','',''))
+      
+
+   return render_template('checkout.html',username=username, email=email, card=card, card_exp_date=card_exp_date, billing_addr=billing_addr, zip_code=zip_code,cart = cart)
+
+
+
+@app.route('/transaction')
+def transaction():
+   with sql.connect("MovieAuctionDB.db") as con:
+      if(len(cart)>0):
+         try:
+            con.row_factory = sql.Row
+            cur = con.cursor()
+            cur.execute(f"select * from USER where user_id = '{global_user_id}';")
+            rows = cur.fetchall()
+            # INSERT INTO TRANSACTIONS
+            for i in range(len(cart)):
+               if(cart[i][4]!=""):
+                  cur.execute("INSERT INTO TRANSACTIONS (USER_ID,MOVIE_AUC_ID,CASH_AMOUNT) VALUES(?,?,?);",(global_user_id,cart[i][0],cart[i][4]))
+                  con.commit()
+            for i in range(len(cart)):
+               if((cart[0][1])!=''):
+                  print("Deleting "+cart[0][1])
+                  # cur.execute("DELETE FROM MOVIEINFO WHERE MOVIE_AUC_ID == cart[0][0]")
+                  # con.commit()
+                  cart.pop(0)
+               else:
+                  cart.pop(0)
+            return transactionlog()
+         except Exception as e:
+            con.rollback()
+            app.logger.info(e)
+            msg = "Your Transaction was not successful"
+            return render_template('transaction.html',cart = cart,msg=msg)
+      
+      
+@app.route('/transactionlog')
+def transactionlog():
+   with sql.connect("MovieAuctionDB.db") as con:
+      cur = con.cursor()   
+      cur.execute("SELECT * FROM TRANSACTIONS WHERE USER_ID = "+str(global_user_id)+";")
+      rows = cur.fetchall()
+      
+
+      transaction = []
+      for i in rows:
+         
+         cur.execute("SELECT * FROM MOVIEINFO WHERE MOVIE_ID = "+str(i[2])+";")
+         log = cur.fetchall()
+         for i in log:
+            # print(i[0])
+            transaction.append(i)
+
+      print(transaction)
+      while(len(transaction)<8):
+         transaction.append(('','','','',''))
+      msg = ""
+      return render_template('transaction.html',cart = transaction,msg=msg)
+
 
 if __name__ == '__main__':
    app.run(debug = True)

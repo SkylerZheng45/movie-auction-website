@@ -1,0 +1,43 @@
+<html>
+   <body>
+      <h1>Your information::</h1>
+      
+         <h1>Checkout</h1>
+         <p>Name: {{username}}</p>
+         <p>Email: {{email}}</p>
+         <p>Card Info:</p>
+         <p>Card number: {{card}}</p>
+         <p>Card expiration date: {{card_exp_date}}</p>
+         <p>Billing address: {{billing_addr}}</p>
+         <p>Zip code: {{zip_code}}</p>
+
+      <a href="{{ url_for('user_profile') }}">Update your information </a>
+      <br>
+      <h1>View your Cart:</h1>
+      <!-- <h5 class="fw-bolder">{{cart[0]}}</h5> -->
+      <form action = "http://localhost:5000/checkout" method = "post">
+         <h1>{{cart[0][1]}} {{cart[0][2]}}</h1>
+         <h3>{{cart[0][4]}}</h3>
+         <h1>{{cart[1][1]}} {{cart[1][2]}}</h1>
+         <h3>{{cart[1][4]}}</h3>
+         <h1>{{cart[2][1]}} {{cart[2][2]}}</h1>
+         <h3>{{cart[2][4]}}</h3>
+         <h1>{{cart[3][1]}} {{cart[3][2]}}</h1>
+         <h3>{{cart[3][4]}}</h3>
+         <h1>{{cart[4][1]}} {{cart[4][2]}}</h1>
+         <h3>{{cart[4][4]}}</h3>
+         <h1>{{cart[5][1]}} {{cart[5][2]}}</h1>
+         <h3>{{cart[5][4]}}</h3>
+         <h1>{{cart[6][1]}} {{cart[6][2]}}</h1>
+         <h3>{{cart[6][4]}}</h3>
+         <h1>{{cart[7][1]}} {{cart[7][2]}}</h1>
+         <h3>{{cart[7][4]}}</h3>
+         
+         <button class="btn btn-outline-dark">
+            <l class="nav-item"><a class="nav-link active" href="{{ url_for('transaction') }}">Checkout</a></li>
+            <!-- <i class="bi-cart-fill me-1"></i> -->
+        </button>
+      </form>
+      <p><a href="{{ url_for('home') }}">Return to Home</a></p>
+   </body>
+</html>

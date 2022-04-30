@@ -38,15 +38,25 @@
                         <li class="nav-item"><a class="nav-link active" aria-current="page" href="{{ url_for('signup') }}">Signup</a></li>
                         <li class="nav-item"><a class="nav-link active" href="{{ url_for('wishlist') }}">Wishlist</a></li>
                         <li class="nav-item"><a class="nav-link active" href="{{ url_for('review') }}">Review</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="{{ url_for('transactionlog') }}">Transaction Log</a></li>
                         <li class="nav-item"><a class="nav-link active" href="{{ url_for('user_profile_page') }}">{{username}}</a></li>
-
+                        
+                        
+                        
                     </ul>
-                    <form class="d-flex">
+                    
+                    <form class="d-flex" action="{{ url_for('checkout') }}">
+                        
                         <button class="btn btn-outline-dark" type="submit">
-                            <i class="bi-cart-fill me-1"></i>
-                            Cart
-                            <span class="badge bg-dark text-white ms-1 rounded-pill">{{cartCounter}}</span>
+                            <!-- <button class="btn btn-outline-dark"> -->
+                            <l class="nav-item"><a  href="{{ url_for('checkout') }}">Checkout</a></li>
+                                <a  href="{{ url_for('checkout') }}"><i class="bi-cart-fill me-1"></i></a>
+                            
+                            <a  href="{{ url_for('checkout') }}"><span class="badge bg-dark text-white ms-1 rounded-pill">{{cartCounter}}</span></a>
+                        
                         </button>
+                    
+                    
                     </form>
                 </div>
             </div>
