@@ -1,0 +1,17 @@
+<html>
+   <body>
+      <form action = "http://localhost:5000/myreview" method = "post">
+        {% for name in names %}
+         <h1>{{name["USERNAME"]}}'s Reviews</h1>
+        {% endfor %}
+
+        {% for review in reviews %}
+            <p>{{review["RATING"]}}</p>
+            <p>{{review["REVIEW_CONTENT"]}}</p>
+            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{ url_for('deleteFromReview',id=review['REVIEW_ID'] ) }}">Remove</a></div>
+        {% endfor %}
+
+      </form>
+      <a href="{{ url_for('home') }}">Return to Home</a>
+   </body>
+</html>

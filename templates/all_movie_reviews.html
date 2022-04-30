@@ -1,0 +1,17 @@
+<html>
+   <body>
+      <form action = "http://localhost:5000/review" method = "post">
+        {% for name in names %}
+         <h1>Reviews for {{name["NAME"]}}</h1>
+        {% endfor %}
+
+        {% for review in reviews %}
+          <p>{{review["RATING"]}}</p>
+          <p>{{review["REVIEW_CONTENT"]}}</p>
+        {% endfor %}
+
+         
+      </form>
+      <a href="{{ url_for('home') }}">Return to Home</a>
+   </body>
+</html>

@@ -1,5 +1,6 @@
-from crypt import methods
+#from crypt import methods
 import email
+from glob import glob
 import logging
 import sys
 from flask import Flask, redirect, url_for, request, render_template, make_response
@@ -341,6 +342,53 @@ def review():
    except:
       con.rollback()
       return redirect(url_for('home'))
+
+@app.route('/reviews/<title>',methods = ['POST','GET'])
+def allMovieReviews(title):
+   try:
+      with sql.connect("MovieAuctionDB.db") as con:
+         con.row_factory = sql.Row
+         cur = con.cursor()
+         cur.execute(f"SELECT * from REVIEW WHERE MOVIE_ID = '{title}';")
+         reviews = cur.fetchall()
+         app.logger.info(reviews)
+         cur.execute(f"SELECT NAME FROM MOVIEINFO WHERE MOVIE_ID = '{title}'")
+         names = cur.fetchall()
+         return render_template("all_movie_reviews.html",reviews=reviews, names=names)
+   except:
+      con.rollback()
+      return redirect(url_for('home'))
+
+@app.route('/myreviews',methods = ['POST','GET'])
+def myreviews():
+   try:
+      with sql.connect("MovieAuctionDB.db") as con:
+         global global_user_id
+         con.row_factory = sql.Row
+         cur = con.cursor()
+         cur.execute(f"SELECT * from REVIEW WHERE USER_ID = {global_user_id};")
+         reviews = cur.fetchall()
+         app.logger.info(global_user_id)
+         app.logger.info(len(reviews))
+
+         cur.execute(f"SELECT USERNAME FROM USER WHERE USER_ID = '{global_user_id}';")
+         names = cur.fetchall()
+         app.logger.info(global_user_id)
+         app.logger.info(len(names))
+         return render_template("all_user_reviews.html",reviews=reviews, names=names)
+   except:
+      con.rollback()
+      return redirect(url_for('home'))
+
+@app.route('/deleteFromReview/<id>', methods = ['POST','GET'])
+def deleteFromReview(id):
+   with sql.connect("MovieAuctionDB.db") as con:
+      global global_user_id
+      cur = con.cursor()
+      cur.execute(f"DELETE FROM REVIEW WHERE REVIEW_ID = '{id}';")
+      con.commit()
+
+   return redirect(url_for('myreviews'))
 
 @app.route('/checkout',methods = ['POST', 'GET'])
 def checkout():
