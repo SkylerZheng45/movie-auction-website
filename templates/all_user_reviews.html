@@ -1,14 +1,27 @@
 <html>
    <body>
-      <form action = "http://localhost:5000/myreview" method = "post">
+      <form action = "http://localhost:5000/myreviews" method = "post">
         {% for name in names %}
          <h1>{{name["USERNAME"]}}'s Reviews</h1>
         {% endfor %}
 
         {% for review in reviews %}
-            <p>{{review["RATING"]}}</p>
-            <p>{{review["REVIEW_CONTENT"]}}</p>
-            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{ url_for('deleteFromReview',id=review['REVIEW_ID'] ) }}">Remove</a></div>
+           <!-- <p><input type = "text" name = "new_rating" value = '{{review["RATING"]}}'></p>-->
+            <p><input type = "text" name = "new_review_content" value = '{{review["REVIEW_CONTENT"]}}'></p>
+            <select name="new_rating" value = '{{review["RATING"]}}'>
+                <option disabled="disabled" selected="selected">{{review["RATING"]}}</option>
+                <optgroup>
+                   <option value='5'>5</option>
+                   <option value='4'>4</option>
+                   <option value='3'>3</option>
+                   <option value='2'>2</option>
+                   <option value='1'>1</option>
+                </optgroup>
+             </select>
+            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{ url_for('deleteFromReview',id=review['REVIEW_ID']) }}">Remove</a></div>
+            <p><input type = "hidden" name = "id" value = "{{review['REVIEW_ID']}}"></p>
+            <input type = "submit" value = "update">
+           <!--- <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{ url_for('updatemyreviews',id=review['REVIEW_ID'], newRating = 'new_rating', newReviewContent = 'new_review_content' ) }}">Update</a></div>-->
         {% endfor %}
 
       </form>

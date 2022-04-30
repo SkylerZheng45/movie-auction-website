@@ -359,7 +359,7 @@ def allMovieReviews(title):
       con.rollback()
       return redirect(url_for('home'))
 
-@app.route('/myreviews',methods = ['POST','GET'])
+@app.route('/myreviews')
 def myreviews():
    try:
       with sql.connect("MovieAuctionDB.db") as con:
@@ -379,6 +379,22 @@ def myreviews():
    except:
       con.rollback()
       return redirect(url_for('home'))
+
+@app.route('/myreviews',methods = ['POST','GET'])
+def updatemyreviews():
+   newRating = request.form['new_rating']
+   newReviewContent = request.form['new_review_content']
+   id = request.form['id']
+   try:
+      with sql.connect("MovieAuctionDB.db") as con:
+         cur = con.cursor()
+         cur.execute(f"UPDATE REVIEW SET RATING = '{newRating}', REVIEW_CONTENT = '{newReviewContent}' WHERE REVIEW_ID = '{id}'; ")
+         return redirect(url_for('myreviews'))
+
+   except:
+      con.rollback()
+      return redirect(url_for('home'))
+
 
 @app.route('/deleteFromReview/<id>', methods = ['POST','GET'])
 def deleteFromReview(id):
