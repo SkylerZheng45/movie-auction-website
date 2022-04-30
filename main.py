@@ -153,6 +153,14 @@ def signup():
    if password == password2:
       try:
          with sql.connect("MovieAuctionDB.db") as con:
+            # check if the email exsits or not
+            con.row_factory = sql.Row
+            cur = con.cursor()
+            cur.execute(f"select * FROM USER where email='{email}'")
+            rows = cur.fetchall()
+            if len(rows)>0:
+               return redirect(url_for('signup_again', msg='Email already existed.'))
+         with sql.connect("MovieAuctionDB.db") as con:
             # insert info
             cur = con.cursor()
             cur.execute("INSERT INTO USER (EMAIL, USERNAME, PASSWORD, AGE ) VALUES(?,?,?,?);",(email,user,password,age))
@@ -174,7 +182,7 @@ def signup():
       except Exception as e:
          con.rollback()
          app.logger.info(e)
-         return redirect(url_for('signup_again', msg='Error in entered information'))
+         return redirect(url_for('signup_again', msg='Error in entered information.'))
    else:
       return redirect(url_for('signup_again', msg='Passwords do not match.'))
 
@@ -233,9 +241,18 @@ def user_profile():
    billing_addr = request.form['billing_addr']
    try:
       with sql.connect("MovieAuctionDB.db") as con:
-         # insert info
+         # check if the email exsits or not
+         con.row_factory = sql.Row
          cur = con.cursor()
          global global_user_id
+         cur.execute(f"select email FROM USER where user_id='{global_user_id}'")
+         rows = cur.fetchall()
+         if len(rows)>0 and rows[0]['email']!=email:
+            msg = 'Email already existed.'
+            return redirect(url_for('user_profile_after_update',msg = msg))
+      with sql.connect("MovieAuctionDB.db") as con:
+         # insert info
+         cur = con.cursor()
          cur.execute(f"UPDATE USER SET EMAIL = '{email}', USERNAME = '{user}', AGE='{age}',CARD='{card}',CARD_EXP_DATE='{card_exp_date}',ZIP_CODE='{zip_code}',BILLING_ADDR='{billing_addr}' WHERE user_id = '{global_user_id}'")
          con.commit()
          msg = "Record successfully updated"
