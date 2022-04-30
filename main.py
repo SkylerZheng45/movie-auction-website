@@ -1,3 +1,4 @@
+from crypt import methods
 import email
 import logging
 import sys
@@ -177,6 +178,8 @@ def signup():
             app.logger.info(global_user_id)
             app.logger.info('last row id')
             app.logger.info(rows[0]['user_id'])
+            cur.execute(f"INSERT INTO WISHLIST (USER_ID) VALUES('{global_user_id}');")
+            con.commit()
             # resp.set_cookie('user_id',rows[0]['user_id'])
          return redirect(url_for('success',name = user))
       except Exception as e:
@@ -261,6 +264,83 @@ def user_profile():
       msg = "Record failed to update"
    finally:
       return redirect(url_for('user_profile_after_update',msg = msg))
+
+# delete user
+@app.route('/delete_user/', methods=['POST'])
+def delete_user():
+   with sql.connect("MovieAuctionDB.db") as con:
+      global global_user_id
+      cur = con.cursor()
+      cur.execute(f"DELETE FROM user WHERE user_id = {global_user_id};")
+      con.commit()
+   global cart
+   cart = [] 
+   global movieInfoCards 
+   with sql.connect("MovieAuctionDB.db") as con:
+      cur = con.cursor()
+      cur.execute("SELECT * FROM MOVIEINFO LIMIT 8")
+      movieInfoCards = cur.fetchall()
+   return render_template('index.html',cart=cart, cartCounter=len(cart),movieInfo = movieInfoCards)
+
+@app.route('/index/<title>', methods = ['POST', 'GET'])
+def addToWishlist(title):
+   try:
+      with sql.connect("MovieAuctionDB.db") as con:
+         global global_user_id
+         cur = con.cursor()
+         cur.execute(f"INSERT INTO WISHLISTBRIDGE (WISHLIST_ID, MOVIE_ID) VALUES((SELECT WISHLIST_ID FROM WISHLIST WHERE USER_ID = '{global_user_id}'),'{title}');")
+         con.commit()
+   except:
+      con.rollback()
+   return redirect(url_for('home'))
+
+@app.route('/wishlist')
+def wishlist():
+   con = sql.connect("MovieAuctionDB.db")
+   con.row_factory = sql.Row
+
+   cur = con.cursor()
+   cur.execute(f"SELECT * FROM WISHLISTBRIDGE WHERE WISHLIST_ID = (SELECT WISHLIST_ID FROM WISHLIST WHERE USER_ID = '{global_user_id}');")
+   rows = cur.fetchall()
+
+   return render_template("wishlist.html", rows=rows)
+
+@app.route('/deleteFromWishlist/<wish_id>/<movie>', methods = ['POST','GET'])
+def deleteFromWishlist(wish_id, movie):
+   with sql.connect("MovieAuctionDB.db") as con:
+      global global_user_id
+      cur = con.cursor()
+      cur.execute(f"DELETE FROM WISHLISTBRIDGE WHERE WISHLIST_ID = '{wish_id}' OR MOVIE_ID = '{movie}';")
+      con.commit()
+
+   return redirect(url_for('wishlist'))
+
+@app.route('/review')
+def review_default():
+   con = sql.connect("MovieAuctionDB.db")
+   con.row_factory = sql.Row
+
+   cur = con.cursor()
+   cur.execute(f"SELECT * from MOVIEINFO;")
+   movies = cur.fetchall()
+   return render_template("review.html",movies=movies)
+
+@app.route('/review',methods = ['POST','GET'])
+def review():
+   value = request.form['selectedMovie']
+   review_content = request.form['review_content']
+   rating = request.form['rating']
+
+   try:
+      with sql.connect("MovieAuctionDB.db") as con:
+         global global_user_id
+         cur = con.cursor()
+         cur.execute("INSERT INTO REVIEW (USER_ID, MOVIE_ID, RATING, REVIEW_CONTENT) VALUES(?,?,?,?);", (global_user_id,value,rating,review_content))
+         con.commit()
+      return redirect(url_for('home'))
+   except:
+      con.rollback()
+      return redirect(url_for('home'))
 
 
 if __name__ == '__main__':

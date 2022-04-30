@@ -49,7 +49,11 @@
                <br>
                <input type = "submit" value = "update">
             </form>
+            <form action = "http://localhost:5000/delete_user/" method = "post">
+                <input type = "submit" value = "delete user">
+            </form>
             <a href="{{ url_for('home') }}">Return to Home</a>
+            
         </div>
     </div>
 </header>
