@@ -304,7 +304,14 @@ def wishlist():
    cur.execute(f"SELECT * FROM WISHLISTBRIDGE WHERE WISHLIST_ID = (SELECT WISHLIST_ID FROM WISHLIST WHERE USER_ID = '{global_user_id}');")
    rows = cur.fetchall()
 
-   return render_template("wishlist.html", rows=rows)
+   movienames = []
+   for i in rows:
+      cur.execute(f"SELECT NAME FROM MOVIEINFO WHERE MOVIE_ID = '{i['MOVIE_ID']}';")
+      n = cur.fetchall()
+      movienames.append(n[0]['NAME'])
+   app.logger.info(movienames)
+
+   return render_template("wishlist.html", rows=rows, movienames = movienames, len = len(rows))
 
 @app.route('/deleteFromWishlist/<wish_id>/<movie>', methods = ['POST','GET'])
 def deleteFromWishlist(wish_id, movie):
@@ -361,7 +368,7 @@ def allMovieReviews(title):
 
 @app.route('/myreviews')
 def myreviews():
-  
+   try:
       with sql.connect("MovieAuctionDB.db") as con:
          global global_user_id
          con.row_factory = sql.Row
@@ -374,14 +381,21 @@ def myreviews():
          cur.execute(f"SELECT USERNAME FROM USER WHERE USER_ID = '{global_user_id}';")
          names = cur.fetchall()
 
-         cur.execute(f"SELECT NAME FROM MOVIEINFO WHERE MOVIE_ID IN(SELECT MOVIE_ID FROM REVIEW WHERE USER_ID = {global_user_id});")
-         movienames = cur.fetchall()
+         movienames = []
+         for i in reviews:
+            cur.execute(f"SELECT NAME FROM MOVIEINFO WHERE MOVIE_ID = '{i['MOVIE_ID']}';")
+            n = cur.fetchall()
+            movienames.append(n[0]['NAME'])
+         app.logger.info(movienames)
+
+        # cur.execute(f"SELECT NAME FROM MOVIEINFO WHERE MOVIE_ID IN(SELECT MOVIE_ID FROM REVIEW WHERE USER_ID = {global_user_id});")
+        # movienames = cur.fetchall()
          app.logger.info(len(movienames))
          app.logger.info(global_user_id)
          app.logger.info(len(names))
          return render_template("all_user_reviews.html",reviews=reviews, names=names, movienames = movienames, len = len(reviews)) #<p>{{movienames[i]["NAME"]}}</p>
- #  except:
-  #    con.rollback()
+   except:
+      con.rollback()
       return redirect(url_for('home'))
 
 @app.route('/myreviews',methods = ['POST','GET'])

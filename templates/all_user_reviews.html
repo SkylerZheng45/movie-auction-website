@@ -8,7 +8,7 @@
         {% for i in range(0, len) %}
            <form method="post" action = "{{ url_for('updatemyreviews') }}">
  
-            
+            <p>{{movienames[i]}}</p>
             <p><input type = "text" name = "new_review_content" value = '{{reviews[i]["REVIEW_CONTENT"]}}'></p>
             <select name="new_rating" value = '{{reviews[i]["RATING"]}}'>
                 <option disabled="disabled" selected="selected">{{reviews[i]["RATING"]}}</option>
