@@ -361,7 +361,7 @@ def allMovieReviews(title):
 
 @app.route('/myreviews')
 def myreviews():
-   try:
+  
       with sql.connect("MovieAuctionDB.db") as con:
          global global_user_id
          con.row_factory = sql.Row
@@ -373,11 +373,15 @@ def myreviews():
 
          cur.execute(f"SELECT USERNAME FROM USER WHERE USER_ID = '{global_user_id}';")
          names = cur.fetchall()
+
+         cur.execute(f"SELECT NAME FROM MOVIEINFO WHERE MOVIE_ID IN(SELECT MOVIE_ID FROM REVIEW WHERE USER_ID = {global_user_id});")
+         movienames = cur.fetchall()
+         app.logger.info(len(movienames))
          app.logger.info(global_user_id)
          app.logger.info(len(names))
-         return render_template("all_user_reviews.html",reviews=reviews, names=names)
-   except:
-      con.rollback()
+         return render_template("all_user_reviews.html",reviews=reviews, names=names, movienames = movienames, len = len(reviews)) #<p>{{movienames[i]["NAME"]}}</p>
+ #  except:
+  #    con.rollback()
       return redirect(url_for('home'))
 
 @app.route('/myreviews',methods = ['POST','GET'])
