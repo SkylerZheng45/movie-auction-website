@@ -44,11 +44,13 @@ def home():
 def addToCart(cardNum):
    #adding to cart try catching to see if logged in
    global cart
+   cart = []
    try: 
       cart.append(movieInfoCards[int(cardNum)])
       print("Cart contents with username: ",username,cart)
       return redirect(url_for('success',name = username))
    except Exception as e:
+      print('adsfa',e)
       cart = []
       return render_template('login_or_signup.html',msg="You must login or signup before adding an item to cart")
    
@@ -227,6 +229,8 @@ def signup():
             rows = cur.fetchall()
             global global_user_id
             global_user_id = rows[0]['user_id']
+            global username
+            username = user
             app.logger.info(global_user_id)
             app.logger.info('last row id')
             app.logger.info(rows[0]['user_id'])
