@@ -74,9 +74,9 @@ def addMovie():
             cur = con.cursor()
             # INSERT INTO MOVIEINFO (NAME,YEAR,DESC,PRICE) VALUES 
             if len(imgurl)==0:
-               cur.execute("INSERT INTO MOVIEINFO (NAME,YEAR,DESC,PRICE) VALUES(?,?,?,?);",(name,year,desc,price))
+               cur.execute("INSERT INTO MOVIEINFO (NAME,YEAR,DESC,PRICE,USER_ID) VALUES(?,?,?,?,?);",(name,year,desc,price,global_user_id))
             else:         
-               cur.execute("INSERT INTO MOVIEINFO (NAME,YEAR,DESC,PRICE,IMGURL) VALUES(?,?,?,?,?);",(name,year,desc,price,imgurl))
+               cur.execute("INSERT INTO MOVIEINFO (NAME,YEAR,DESC,PRICE,IMGURL,USER_ID) VALUES(?,?,?,?,?);",(name,year,desc,price,imgurl,global_user_id))
             con.commit()
             msg = "Record successfully added"
          return redirect(url_for('success',name = username))
@@ -87,6 +87,37 @@ def addMovie():
    else:
       return render_template('movie_entry.html', msg='Error in entered information, Please fill out again')
 
+@app.route('/removeMovie/<movieID>',methods = ['POST', 'GET'])
+def removeMovie(movieID):
+   with sql.connect("MovieAuctionDB.db") as con:
+      cur = con.cursor()
+      print('MOVIE ID =',movieID)
+      cur.execute("DELETE FROM MOVIEINFO WHERE MOVIE_ID = ? ;",(movieID,))
+      con.commit()
+      msg = "Movie Successfully Removed"
+      return redirect(url_for('mymovies'))
+
+@app.route('/changeMoviePrice/<movieID>',methods = ['POST', 'GET'])
+def changeMoviePrice(movieID):
+   price = request.form['price']
+   print("NEW PRICE REQUESTED",price )
+   if len(price)>0:
+      try:
+         with sql.connect("MovieAuctionDB.db") as con:    
+            cur = con.cursor()  
+            cur.execute("UPDATE MOVIEINFO SET PRICE = ? WHERE MOVIE_ID = ? ;",(price,movieID))
+            con.commit()
+            msg = "Record successfully added"
+         return redirect(url_for('mymovies'))
+      except Exception as e:
+         con.rollback()
+         app.logger.info(e)
+         return redirect(url_for('success',name = username))
+   else:
+      return redirect(url_for('success',name = username))
+
+
+
 @app.route('/showAllProducts')
 def showAllProducts():
    with sql.connect("MovieAuctionDB.db") as con:
@@ -95,6 +126,26 @@ def showAllProducts():
       movieInfoCards = cur.fetchall()
       print("Number of Movies queryed", len(movieInfoCards))
       return render_template('all_products.html',cart=cart, cartCounter=len(cart),movieInfo = movieInfoCards)
+
+@app.route('/mymovies')
+def mymovies():
+   with sql.connect("MovieAuctionDB.db") as con:
+      cur = con.cursor()
+      cur.execute(f"SELECT * FROM MOVIEINFO where USER_ID={global_user_id}")
+      movieInfoCards = cur.fetchall()
+      print("Number of Movies queryed", len(movieInfoCards))
+      return render_template('mymovies.html',username=username,movieInfo = movieInfoCards)
+
+
+@app.route('/mymovieauctions')
+def mymovieauctions():
+   with sql.connect("MovieAuctionDB.db") as con:
+      cur = con.cursor()
+      cur.execute("SELECT * FROM MOVIEAUCTION WHERE USER_ID = ?", (global_user_id))
+      movieInfoCards = cur.fetchall()
+      print("Number of Movies queryed", len(movieInfoCards))
+      return render_template('mymovieauctions.html',movieInfo = movieInfoCards)
+
 
 # login
 @app.route('/<name>')
@@ -363,8 +414,8 @@ def allMovieReviews(title):
          names = cur.fetchall()
          return render_template("all_movie_reviews.html",reviews=reviews, names=names)
    except:
-      con.rollback()
-      return redirect(url_for('home'))
+         con.rollback()
+         return redirect(url_for('home'))
 
 @app.route('/myreviews')
 def myreviews():
@@ -410,8 +461,8 @@ def updatemyreviews():
          return redirect(url_for('myreviews'))
 
    except:
-      con.rollback()
-      return redirect(url_for('home'))
+         con.rollback()
+         return redirect(url_for('home'))
 
 
 @app.route('/deleteFromReview/<id>', methods = ['POST','GET'])

@@ -18,7 +18,7 @@
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container px-4 px-lg-5">
-                <a class="navbar-brand" href="#!">Start Bootstrap</a>
+                <a class="navbar-brand" href=".">Start Bootstrap</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
@@ -30,18 +30,26 @@
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item" href="{{ url_for('showAllProducts')}}">All Products</a></li>
                                 <li><hr class="dropdown-divider" /></li>
-                                <li><a class="dropdown-item" href="#!">Popular Items</a></li>
-                                <li><a class="dropdown-item" href="#!">New Arrivals</a></li>
+                                <li><a class="dropdown-item" href="#!">Movie Auction Items</a></li>
+                                <!-- <li><a class="dropdown-item" href="#!">Popular Items</a></li>
+                                <li><a class="dropdown-item" href="#!">New Arrivals</a></li> -->
                             </ul>
                         </li>
                         <li class="nav-item"><a class="nav-link active" aria-current="page" href="{{ url_for('login') }}">Login</a></li>
                         <li class="nav-item"><a class="nav-link active" aria-current="page" href="{{ url_for('signup') }}">Signup</a></li>
-                        <li class="nav-item"><a class="nav-link active" href="{{ url_for('wishlist') }}">Wishlist</a></li>
                         <li class="nav-item"><a class="nav-link active" href="{{ url_for('review') }}">Review</a></li>
-                        <li class="nav-item"><a class="nav-link active" href="{{ url_for('myreviews') }}">My Reviews</a></li>
                         <li class="nav-item"><a class="nav-link active" href="{{ url_for('transactionlog') }}">Transaction Log</a></li>
-                        <li class="nav-item"><a class="nav-link active" href="{{ url_for('user_profile_page') }}">{{username}}</a></li>
-                        
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">{{username}}</a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="{{ url_for('user_profile_page') }}">Account Information</a></li>
+                                <li><hr class="dropdown-divider"/></li>
+                                <li><a class="dropdown-item" href="{{ url_for('wishlist') }}">My Wishlist</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('myreviews') }}">My Reviews</a></li>                         
+                                <li><a class="dropdown-item" href="{{ url_for('mymovies')}}">My Movies</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('mymovieauctions')}}">My Movie Auction</a></li>
+                            </ul>
+                        </li>
                         
                         
                     </ul>
@@ -54,9 +62,8 @@
                                 <a  href="{{ url_for('checkout') }}"><i class="bi-cart-fill me-1"></i></a>
                             
                             <a  href="{{ url_for('checkout') }}"><span class="badge bg-dark text-white ms-1 rounded-pill">{{cartCounter}}</span></a>
-                        
+            
                         </button>
-                    
                     
                     </form>
                 </div>

@@ -19,7 +19,8 @@ CREATE TABLE MOVIEINFO(
     YEAR INT NOT NULL,
     DESC TEXT NOT NULL,
     PRICE FLOAT NOT NULL,
-    IMGURL CHAR(250) Default "https://static6.depositphotos.com/1003434/555/i/950/depositphotos_5551251-stock-photo-cinema.jpg" NOT NULL 
+    IMGURL CHAR(250) Default "https://static6.depositphotos.com/1003434/555/i/950/depositphotos_5551251-stock-photo-cinema.jpg" NOT NULL,
+    USER_ID REFERENCES USER(USER_ID) 
 );
 
 --WishList Table
