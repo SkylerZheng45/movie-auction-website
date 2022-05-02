@@ -93,6 +93,8 @@
                             <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                                 <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{url_for('addToCart',cardNum = 0)}}">Add to cart</a></div>
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{url_for('addToWishlist',title = movieRow[0])}}">Add to Wishlist</a></div>
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{url_for('allMovieReviews',title = movieRow[0])}}">View Reviews</a></div>
                             </div>
                         </div>  
                     </div>
