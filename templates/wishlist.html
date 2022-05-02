@@ -10,7 +10,7 @@
                   <div class="text-center"><a style="color: white" href="{{ url_for('deleteFromWishlist',wish_id=rows[i]['WISHLIST_ID'],movie=rows[i]['MOVIE_ID'] ) }}">Remove</a></div><br><br>
                {% endfor %}
             </form>
-            <a href="{{ url_for('home') }}">Return to Home</a>
+            <a style="color: white" href="{{ url_for('home') }}">Return to Home</a>
             </div>
       </div>
    </body>

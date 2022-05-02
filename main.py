@@ -344,6 +344,9 @@ def delete_user():
 
 # code ending position - Sixing Zheng
 
+# code starting position - Reed Billedo
+
+# add a movie from the home page onto the user's wishlist
 @app.route('/index/<title>', methods = ['POST', 'GET'])
 def addToWishlist(title):
    try:
@@ -352,6 +355,7 @@ def addToWishlist(title):
          con = sql.connect("MovieAuctionDB.db")
          con.row_factory = sql.Row
 
+         # check if the the movie they are trying to add is already in the wishlist
          cur = con.cursor()
          cur.execute(f"SELECT MOVIE_ID FROM WISHLISTBRIDGE WHERE WISHLIST_ID = (SELECT WISHLIST_ID FROM WISHLIST WHERE USER_ID = '{global_user_id}');")
          movie_ids = cur.fetchall()
@@ -360,21 +364,25 @@ def addToWishlist(title):
                con.rollback()
                return redirect(url_for('home'))
 
+         # if it is not, add to wishlist
          cur.execute(f"INSERT INTO WISHLISTBRIDGE (WISHLIST_ID, MOVIE_ID) VALUES((SELECT WISHLIST_ID FROM WISHLIST WHERE USER_ID = '{global_user_id}'),'{title}');")
          con.commit()
    except:
       con.rollback()
    return redirect(url_for('home'))
 
+# takes the user to their page that lists their wishlist
 @app.route('/wishlist')
 def wishlist():
    con = sql.connect("MovieAuctionDB.db")
    con.row_factory = sql.Row
 
+   # get the items from wishlistbridge where the user's id is
    cur = con.cursor()
    cur.execute(f"SELECT * FROM WISHLISTBRIDGE WHERE WISHLIST_ID = (SELECT WISHLIST_ID FROM WISHLIST WHERE USER_ID = '{global_user_id}');")
    rows = cur.fetchall()
 
+   # get the movie names from the query earlier
    movienames = []
    for i in rows:
       cur.execute(f"SELECT NAME FROM MOVIEINFO WHERE MOVIE_ID = '{i['MOVIE_ID']}';")
@@ -384,16 +392,19 @@ def wishlist():
 
    return render_template("wishlist.html", rows=rows, movienames = movienames, len = len(rows))
 
+# removes the movie from the user's wishlist
 @app.route('/deleteFromWishlist/<wish_id>/<movie>', methods = ['POST','GET'])
 def deleteFromWishlist(wish_id, movie):
    with sql.connect("MovieAuctionDB.db") as con:
       global global_user_id
       cur = con.cursor()
+      # deletes the item from wishlistbridge where the wishlist_id and movie_id match
       cur.execute(f"DELETE FROM WISHLISTBRIDGE WHERE WISHLIST_ID = '{wish_id}' OR MOVIE_ID = '{movie}';")
       con.commit()
 
    return redirect(url_for('wishlist'))
 
+# renders the page that lets the user add a review
 @app.route('/review')
 def review_default():
    con = sql.connect("MovieAuctionDB.db")
@@ -404,6 +415,7 @@ def review_default():
    movies = cur.fetchall()
    return render_template("review.html",movies=movies)
 
+# gets the data from the review page in order to add new entry to review table
 @app.route('/review',methods = ['POST','GET'])
 def review():
    value = request.form['selectedMovie']
@@ -417,6 +429,7 @@ def review():
          con = sql.connect("MovieAuctionDB.db")
          con.row_factory = sql.Row
          cur = con.cursor()
+         # checks if the user has already made a review for this movie
          cur.execute(f"SELECT MOVIE_ID FROM REVIEW WHERE USER_ID = {global_user_id};")
          movie_ids = cur.fetchall()
 
@@ -424,6 +437,7 @@ def review():
             if(i['MOVIE_ID'] == value):
                return redirect(url_for('review'))
 
+         # if it has not, adds it to the review table
          cur.execute("INSERT INTO REVIEW (USER_ID, MOVIE_ID, RATING, REVIEW_CONTENT) VALUES(?,?,?,?);", (global_user_id,value,rating,review_content))
          con.commit()
       return redirect(url_for('home'))
@@ -431,6 +445,7 @@ def review():
       con.rollback()
       return redirect(url_for('home'))
 
+# gets all of the reviews for a specific movie
 @app.route('/reviews/<title>',methods = ['POST','GET'])
 def allMovieReviews(title):
    try:
@@ -440,6 +455,8 @@ def allMovieReviews(title):
          cur.execute(f"SELECT * from REVIEW WHERE MOVIE_ID = '{title}';")
          reviews = cur.fetchall()
          app.logger.info(reviews)
+
+         # gets the name of the movie for the top of the page
          cur.execute(f"SELECT NAME FROM MOVIEINFO WHERE MOVIE_ID = '{title}'")
          names = cur.fetchall()
          return render_template("all_movie_reviews.html",reviews=reviews, names=names)
@@ -447,6 +464,7 @@ def allMovieReviews(title):
          con.rollback()
          return redirect(url_for('home'))
 
+# gets all of the reviews that a specific user has written
 @app.route('/myreviews')
 def myreviews():
    try:
@@ -462,6 +480,7 @@ def myreviews():
          cur.execute(f"SELECT USERNAME FROM USER WHERE USER_ID = '{global_user_id}';")
          names = cur.fetchall()
 
+         # checks if the user has already written the movie
          movienames = []
          for i in reviews:
             cur.execute(f"SELECT NAME FROM MOVIEINFO WHERE MOVIE_ID = '{i['MOVIE_ID']}';")
@@ -479,6 +498,7 @@ def myreviews():
       con.rollback()
       return redirect(url_for('home'))
 
+# allows the user to edit the reviews they have made
 @app.route('/myreviews',methods = ['POST','GET'])
 def updatemyreviews():
    newRating = request.form['new_rating']
@@ -494,7 +514,7 @@ def updatemyreviews():
          con.rollback()
          return redirect(url_for('home'))
 
-
+# allows the user to delete a review from their account
 @app.route('/deleteFromReview/<id>', methods = ['POST','GET'])
 def deleteFromReview(id):
    with sql.connect("MovieAuctionDB.db") as con:
@@ -504,6 +524,8 @@ def deleteFromReview(id):
       con.commit()
 
    return redirect(url_for('myreviews'))
+
+# code ending - Reed Billedo
 
 
 #Charles Tran Code Starts Here
