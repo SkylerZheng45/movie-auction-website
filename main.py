@@ -24,7 +24,7 @@ def home():
    global movieInfoCards 
    with sql.connect("MovieAuctionDB.db") as con:
       cur = con.cursor()
-      cur.execute("SELECT * FROM MOVIEINFO")
+      cur.execute("SELECT * FROM MOVIEINFO LIMIT 8")
       movieInfoCards = cur.fetchall()
    # find username if global_user_id is defined
    print(movieInfoCards)
@@ -106,6 +106,7 @@ def removeMovie(movieID):
       app.logger.info(e)
       return redirect(url_for('mymovies'))
 
+
 @app.route('/changeMoviePrice/<movieID>',methods = ['POST', 'GET'])
 def changeMoviePrice(movieID):
    price = request.form['price']
@@ -129,8 +130,6 @@ def changeMoviePrice(movieID):
 def addMovieAuctionBid(auctionID):
    price = request.form['price']
    print("NEW PRICE REQUESTED ON AN AUCTION",price,auctionID)
-   with sql.connect("MovieAuctionDB.db") as con:
-
    if len(price)>0:
       try:
          with sql.connect("MovieAuctionDB.db") as con:    

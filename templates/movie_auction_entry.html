@@ -1,4 +1,8 @@
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/styles.css') }}">
 <html>
+   <header class="bg-dark py-5">
+      <div class="container px-4 px-lg-5 my-5">
+          <div class="text-center text-white">
    <body>
       <h2>{{msg}}</h2>
       <form action = "http://localhost:5000/addMovieAuction" method = "post">
@@ -21,6 +25,7 @@
       </form>
       <a href="{{ url_for('success',name=name2) }}">Return to Home</a>
    </body> 
+</header>
 </html>
 
 <!-- CREATE TABLE MOVIEAUCTION(
