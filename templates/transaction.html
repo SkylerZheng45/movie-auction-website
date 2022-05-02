@@ -1,5 +1,8 @@
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/styles.css') }}">
 <html>
-   <body>
+   <header class="bg-dark py-5">
+      <div class="container px-4 px-lg-5 my-5">
+          <div class="text-center text-white">
       <h2>{{msg}}</h2>
       <h1>Items Purchased: </h1>
       {%for cartItem in cart%}
@@ -9,5 +12,7 @@
       {%endfor%}
       
       <a href="{{ url_for('home') }}">Return to User Home</a>
-   </body>
+   </div>
+</div>
+</header>
 </html>
