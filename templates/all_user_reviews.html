@@ -14,7 +14,7 @@
                     <p>{{movienames[i]}}</p>
                     <p><input type = "text" name = "new_review_content" value = '{{reviews[i]["REVIEW_CONTENT"]}}'></p>
                     <select name="new_rating" value = '{{reviews[i]["RATING"]}}'>
-                        <option disabled="disabled" selected="selected">{{reviews[i]["RATING"]}}</option>
+                        <option selected="selected" value = '{{reviews[i]["RATING"]}}'>{{reviews[i]["RATING"]}}</option>
                         <optgroup>
                         <option value='5'>5</option>
                         <option value='4'>4</option>
