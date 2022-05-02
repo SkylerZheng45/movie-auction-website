@@ -3,9 +3,8 @@
       <h2>{{msg}}</h2>
       <h1>Items Purchased: </h1>
       {%for cartItem in cart%}
-      <img  src="{{cartItem[5]}}" alt="Picture of Movie" width = "80px" height = "100px"/>
-      <h1>{{cartItem[1]}} ({{cartItem[2]}})</h1>
-      <h3>${{cartItem[4]}}</h3>
+      <h1>{{cartItem[3]}} </h1>
+      <h3>Purchased for ${{cartItem[4]}}</h3>
       <h3>------------------------------------</h3>
       {%endfor%}
       

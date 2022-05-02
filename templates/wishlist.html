@@ -1,13 +1,17 @@
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/styles.css') }}">
 <html>
-   <body>
-      <h2></h2>
-      <form action = "http://localhost:5000/wishlist" method = "post">
-         <h1>Wishlist</h1>
-         {% for i in range(0, len) %}
-            <p>{{movienames[i]}}</p>
-            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{ url_for('deleteFromWishlist',wish_id=rows[i]['WISHLIST_ID'],movie=rows[i]['MOVIE_ID'] ) }}">Remove</a></div>
-         {% endfor %}
-      </form>
-      <a href="{{ url_for('home') }}">Return to Home</a>
+   <body class="bg-dark py-5">
+      <div class="container px-4 px-lg-5 my-5">
+         <div class="text-center text-white">
+            <form action = "http://localhost:5000/wishlist" method = "post">
+               <h1>Wishlist</h1>
+               {% for i in range(0, len) %}
+                  <p>{{movienames[i]}}</p>
+                  <div class="text-center"><a style="color: white" href="{{ url_for('deleteFromWishlist',wish_id=rows[i]['WISHLIST_ID'],movie=rows[i]['MOVIE_ID'] ) }}">Remove</a></div><br><br>
+               {% endfor %}
+            </form>
+            <a href="{{ url_for('home') }}">Return to Home</a>
+            </div>
+      </div>
    </body>
 </html>
