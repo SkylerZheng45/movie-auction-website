@@ -90,6 +90,7 @@ def addMovie():
    else:
       return render_template('movie_entry.html', msg='Error in entered information, Please fill out again')
 
+#remove Movie from your personal account
 @app.route('/removeMovie/<movieID>',methods = ['POST', 'GET'])
 def removeMovie(movieID):
    try:
@@ -128,6 +129,8 @@ def changeMoviePrice(movieID):
 def addMovieAuctionBid(auctionID):
    price = request.form['price']
    print("NEW PRICE REQUESTED ON AN AUCTION",price,auctionID)
+   with sql.connect("MovieAuctionDB.db") as con:
+
    if len(price)>0:
       try:
          with sql.connect("MovieAuctionDB.db") as con:    
