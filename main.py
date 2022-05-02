@@ -44,7 +44,7 @@ def home():
 def addToCart(cardNum):
    #adding to cart try catching to see if logged in
    global cart
-   # cart = []
+   cart = []
    try: 
       cart.append(movieInfoCards[int(cardNum)])
       print("Cart contents with username: ",username,cart)
@@ -148,8 +148,10 @@ def mymovieauctions():
       print("Number of Movies queryed", len(movieInfoCards))
       return render_template('mymovieauctions.html',movieInfo = movieInfoCards)
 
+# code starting position - Sixing Zheng
 
-# login
+# login functions
+# After login and sign up correctly, go to this function
 @app.route('/<name>')
 def success(name):
    global movieInfoCards 
@@ -159,14 +161,17 @@ def success(name):
       movieInfoCards = cur.fetchall()
    return render_template('index.html', username = name,cartCounter=len(cart), movieInfo = movieInfoCards)
 
+# route to the login page
 @app.route('/login')
 def login_page():
    return render_template('login.html')
 
+# route to the login page with custom message
 @app.route('/login/<msg>')
 def login_again(msg):
    return render_template('login.html', msg=msg)
 
+# gettting the information for login and check for password
 @app.route('/login',methods = ['POST', 'GET'])
 def login():
    email = request.form['email']
@@ -190,14 +195,17 @@ def login():
       return redirect(url_for('login_again', msg='Wrong information entered'))
 
 #signup
+# route to the sign up page
 @app.route('/signup')
 def signup_page():
    return render_template('signup.html')
 
+# route to the sign up page with custom message
 @app.route('/signup/<msg>')
 def signup_again(msg):
    return render_template('signup.html', msg=msg)
 
+# getting the information for the form submmitted with the sign up page
 @app.route('/signup',methods = ['POST', 'GET'])
 def signup():
    password = request.form['password']
@@ -236,7 +244,6 @@ def signup():
             app.logger.info(rows[0]['user_id'])
             cur.execute(f"INSERT INTO WISHLIST (USER_ID) VALUES('{global_user_id}');")
             con.commit()
-            # resp.set_cookie('user_id',rows[0]['user_id'])
          return redirect(url_for('success',name = user))
       except Exception as e:
          con.rollback()
@@ -246,7 +253,7 @@ def signup():
       return redirect(url_for('signup_again', msg='Passwords do not match.'))
 
 # user_profile
-# with feedback message
+# route to user profile with feedback message
 @app.route('/user_profile')
 def user_profile_page():
    # get account info from the database
@@ -267,7 +274,7 @@ def user_profile_page():
       zip_code = rows[0]['zip_code']
    return render_template('user_profile.html',username=username, email=email, age=age, card=card, card_exp_date=card_exp_date, billing_addr=billing_addr, zip_code=zip_code)
 
-# without feedback message
+# route to the user profile without feedback message
 @app.route('/user_profile/<msg>')
 def user_profile_after_update(msg):
    # get account info from the database
@@ -337,6 +344,8 @@ def delete_user():
       cur.execute("SELECT * FROM MOVIEINFO LIMIT 8")
       movieInfoCards = cur.fetchall()
    return render_template('index.html',cart=cart, cartCounter=len(cart),movieInfo = movieInfoCards)
+
+# code ending position - Sixing Zheng
 
 @app.route('/index/<title>', methods = ['POST', 'GET'])
 def addToWishlist(title):
@@ -478,7 +487,6 @@ def deleteFromReview(id):
       con.commit()
 
    return redirect(url_for('myreviews'))
-
 #Charles Tran
 #Code Starts Here
 #Queries for all of the user data in order to process a transaction
@@ -553,7 +561,8 @@ def transactionlog(msg=""):
             transaction.append(i)
 
       return render_template('transaction.html',cart = transaction,msg=msg)
-#Charles Tran Code Ends Here
+#Charles Tran Code Ends Here',cart = transaction,msg=msg)
+
 
 if __name__ == '__main__':
    app.run(debug = True)
