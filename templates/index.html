@@ -24,7 +24,14 @@
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                         <li class="nav-item"><a class="nav-link active" aria-current="page" href="{{url_for('home')}}">Home</a></li>
                         <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="{{ url_for('addMovie') }}">Add Movie</a></li>
+                        <!-- <li class="nav-item"><a class="nav-link active" aria-current="page" href="{{ url_for('addMovie') }}">Add Movie</a></li> -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Sell Movies</a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="{{ url_for('addMovie')}}">Add Movie</a></li>
+                                <li><a class="dropdown-item" href="#!">Add Movie Auction Item</a></li>
+                            </ul>
+                        </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -85,7 +92,7 @@
                     <div class="col mb-5">
                         <div class="card h-100">
                             <!-- Product image-->
-                            <img class="card-img-top" src="../static/images/SpiderMan_No_Way_Home.jpg" alt="Picture of Movie" />
+                            <img class="card-img-top" src="{{movieInfo[0][5]}}" alt="Picture of Movie" width="450px" height="200px"/>
                             <!-- Product details-->
                             <div class="card-body p-4">
                                 <div class="text-center">
@@ -108,7 +115,7 @@
                             <!-- Sale badge-->
                             <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
                             <!-- Product image-->
-                            <img class="card-img-top" src="../static/images/Minons.jpg" alt="Picture of Movie" />
+                            <img class="card-img-top" src="{{movieInfo[1][5]}}" alt="Picture of Movie" width="450px" height="200px"/>
                             <!-- Product details-->
                             <div class="card-body p-4">
                                 <div class="text-center">
@@ -140,7 +147,7 @@
                             <!-- Sale badge-->
                             <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
                             <!-- Product image-->
-                            <img class="card-img-top" src="../static/images/Morbius.jpg" alt="Picture of Movie" />
+                            <img class="card-img-top" src="{{movieInfo[2][5]}}" alt="Picture of Movie" width="450px" height="200px"/>
                             <!-- Product details-->
                             <div class="card-body p-4">
                                 <div class="text-center">
@@ -162,7 +169,7 @@
                     <div class="col mb-5">
                         <div class="card h-100">
                             <!-- Product image-->
-                            <img class="card-img-top" src="../static/images/Sonic_The_Hedgehog.jpg" alt="Picutre of Movie" />
+                            <img class="card-img-top" src="{{movieInfo[3][5]}}" alt="Picture of Movie" width="450px" height="200px"/>
                             <!-- Product details-->
                             <div class="card-body p-4">
                                 <div class="text-center">
@@ -193,7 +200,7 @@
                             <!-- Sale badge-->
                             <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
                             <!-- Product image-->
-                            <img class="card-img-top" src="../static/images/GhostBusters_AfterLife.jpg" alt="Picture of Movie" />
+                            <img class="card-img-top" src="{{movieInfo[4][5]}}" alt="Picture of Movie" width="450px" height="200px"/>
                             <!-- Product details-->
                             <div class="card-body p-4">
                                 <div class="text-center">
@@ -215,7 +222,7 @@
                     <div class="col mb-5">
                         <div class="card h-100">
                             <!-- Product image-->
-                            <img class="card-img-top" src="../static/images/Artemis_Fowl.jpg" alt="Picture of Movie" />
+                            <img class="card-img-top" src="{{movieInfo[5][5]}}" alt="Picture of Movie" width="450px" height="200px"/>
                             <!-- Product details-->
                             <div class="card-body p-4">
                                 <div class="text-center">
@@ -238,7 +245,7 @@
                             <!-- Sale badge-->
                             <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
                             <!-- Product image-->
-                            <img class="card-img-top" src="../static/images/Shang_Chi.jpg" alt="Picture of Images" />
+                            <img class="card-img-top" src="{{movieInfo[6][5]}}" alt="Picture of Images" width="450px" height="200px"/>
                             <!-- Product details-->
                             <div class="card-body p-4">
                                 <div class="text-center">
@@ -268,7 +275,7 @@
                     <div class="col mb-5">
                         <div class="card h-100">
                             <!-- Product image-->
-                            <img class="card-img-top" src="../static/images/My_Neighbor_Totoro.jpg" alt="Picture of movie" />
+                            <img class="card-img-top" src="{{movieInfo[7][5]}}" alt="Picture of movie" width="450px" height="200px"/>
                             <!-- Product details-->
                             <div class="card-body p-4">
                                 <div class="text-center">

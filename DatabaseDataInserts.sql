@@ -27,6 +27,15 @@ INSERT INTO MOVIEINFO (NAME,YEAR,DESC,PRICE,IMGURL) VALUES
 INSERT INTO MOVIEINFO (NAME,YEAR,DESC,PRICE,IMGURL) VALUES 
 ("My Neighbor Totoro",1988,"When two girls move to the country to be near their ailing mother, they have adventures with the wondrous forest spirits who live nearby.",12.99,"https://resizing.flixster.com/zl240CPBBowAZfldk-8FaX4dGuw=/206x305/v2/https://flxt.tmsimg.com/NowShowing/120448/120448_aa.jpg");
 
+INSERT INTO MOVIEINFO (NAME,YEAR,DESC,PRICE,IMGURL) VALUES 
+("The Godfather",1972,"The aging patriarch of an organized crime dynasty in postwar New York City transfers control of his clandestine empire to his reluctant youngest son.",10.99,"https://resizing.flixster.com/DuGwTf1oZLyO-gJBjQLwVDUAFFU=/206x305/v2/https://flxt.tmsimg.com/NowShowing/43177/43177_aa.jpg");
+
+INSERT INTO MOVIEINFO (NAME,YEAR,DESC,PRICE,IMGURL) VALUES 
+("THE BATMAN",2022,"Batman ventures into Gotham City's underworld when a sadistic killer leaves behind a trail of cryptic clues. As the evidence begins to lead closer to home and the scale of the perpetrator's plans become clear, he must forge new relationships, unmask the culprit and bring justice to the abuse of power and corruption that has long plagued the metropolis.",49.99,"https://resizing.flixster.com/xEIEg_rTVEXqYmVXBattSkNGj3w=/206x305/v2/https://resizing.flixster.com/z7Qex7L7ZUT1YdAwuJ49BEulml4=/ems.ZW1zLXByZC1hc3NldHMvbW92aWVzLzc1OGFlMDI0LTE1ZTEtNDE4ZS04Y2RmLWNjYzcyOWQyZmMyNi5qcGc=");
+
+INSERT INTO MOVIEINFO (NAME,YEAR,DESC,PRICE,IMGURL) VALUES 
+("MORTAL KOMBAT",2021,"In Mortal Kombat, MMA fighter Cole Young, accustomed to taking a beating for money, is unaware of his heritage--or why Outworld's Emperor Shang Tsung has sent his best warrior, Sub-Zero, an otherworldly Cryomancer, to hunt Cole down.",49.99,"https://resizing.flixster.com/lR9jf8QkbCVtqy8Pg_-fntKRi0U=/206x305/v2/https://resizing.flixster.com/7O6kGFWz7_XiWOjMBTrERl2glDA=/ems.ZW1zLXByZC1hc3NldHMvbW92aWVzL2Q1MjgzODBhLTdmOGItNGNkNC1iOTQ0LTMxNzI0MzZkMWY1Ni5wbmc=");
+
 
 UPDATE MOVIEINFO SET 
 IMGURL="https://resizing.flixster.com/zl240CPBBowAZfldk-8FaX4dGuw=/206x305/v2/https://flxt.tmsimg.com/NowShowing/120448/120448_aa.jpg"
