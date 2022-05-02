@@ -349,7 +349,17 @@ def addToWishlist(title):
    try:
       with sql.connect("MovieAuctionDB.db") as con:
          global global_user_id
+         con = sql.connect("MovieAuctionDB.db")
+         con.row_factory = sql.Row
+
          cur = con.cursor()
+         cur.execute(f"SELECT MOVIE_ID FROM WISHLISTBRIDGE WHERE WISHLIST_ID = (SELECT WISHLIST_ID FROM WISHLIST WHERE USER_ID = '{global_user_id}');")
+         movie_ids = cur.fetchall()
+         for i in movie_ids:
+            if(i['MOVIE_ID'] == title):
+               con.rollback()
+               return redirect(url_for('home'))
+
          cur.execute(f"INSERT INTO WISHLISTBRIDGE (WISHLIST_ID, MOVIE_ID) VALUES((SELECT WISHLIST_ID FROM WISHLIST WHERE USER_ID = '{global_user_id}'),'{title}');")
          con.commit()
    except:
@@ -403,7 +413,17 @@ def review():
    try:
       with sql.connect("MovieAuctionDB.db") as con:
          global global_user_id
+         global global_user_id
+         con = sql.connect("MovieAuctionDB.db")
+         con.row_factory = sql.Row
          cur = con.cursor()
+         cur.execute(f"SELECT MOVIE_ID FROM REVIEW WHERE USER_ID = {global_user_id};")
+         movie_ids = cur.fetchall()
+
+         for i in movie_ids:
+            if(i['MOVIE_ID'] == value):
+               return redirect(url_for('review'))
+
          cur.execute("INSERT INTO REVIEW (USER_ID, MOVIE_ID, RATING, REVIEW_CONTENT) VALUES(?,?,?,?);", (global_user_id,value,rating,review_content))
          con.commit()
       return redirect(url_for('home'))
