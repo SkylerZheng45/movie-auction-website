@@ -117,8 +117,6 @@ def changeMoviePrice(movieID):
    else:
       return redirect(url_for('success',name = username))
 
-
-
 @app.route('/showAllProducts')
 def showAllProducts():
    with sql.connect("MovieAuctionDB.db") as con:
