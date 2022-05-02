@@ -1,33 +1,38 @@
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/styles.css') }}">
 <html>
-   <body>
-      <form action = "http://localhost:5000/myreviews" method = "post">
-        {% for name in names %}
-         <h1>{{name["USERNAME"]}}'s Reviews</h1>
-        {% endfor %}
+   <body class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <form action = "http://localhost:5000/myreviews" method = "post">
+                {% for name in names %}
+                <h1>{{name["USERNAME"]}}'s Reviews</h1>
+                {% endfor %}
+                
+                {% for i in range(0, len) %}
+                <form method="post" action = "{{ url_for('updatemyreviews') }}">
         
-        {% for i in range(0, len) %}
-           <form method="post" action = "{{ url_for('updatemyreviews') }}">
- 
-            <p>{{movienames[i]}}</p>
-            <p><input type = "text" name = "new_review_content" value = '{{reviews[i]["REVIEW_CONTENT"]}}'></p>
-            <select name="new_rating" value = '{{reviews[i]["RATING"]}}'>
-                <option disabled="disabled" selected="selected">{{reviews[i]["RATING"]}}</option>
-                <optgroup>
-                   <option value='5'>5</option>
-                   <option value='4'>4</option>
-                   <option value='3'>3</option>
-                   <option value='2'>2</option>
-                   <option value='1'>1</option>
-                </optgroup>
-             </select>
-            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{ url_for('deleteFromReview',id=reviews[i]['REVIEW_ID']) }}">Remove</a></div>
-            <p><input type = "hidden" name = "id" value = "{{reviews[i]['REVIEW_ID']}}"></p>
-            <input type = "submit" value = "update">
-            </form>
-    
-        {% endfor %}
+                    <p>{{movienames[i]}}</p>
+                    <p><input type = "text" name = "new_review_content" value = '{{reviews[i]["REVIEW_CONTENT"]}}'></p>
+                    <select name="new_rating" value = '{{reviews[i]["RATING"]}}'>
+                        <option disabled="disabled" selected="selected">{{reviews[i]["RATING"]}}</option>
+                        <optgroup>
+                        <option value='5'>5</option>
+                        <option value='4'>4</option>
+                        <option value='3'>3</option>
+                        <option value='2'>2</option>
+                        <option value='1'>1</option>
+                        </optgroup>
+                    </select>
+                    <div class="text-center"><a style="color: white" href="{{ url_for('deleteFromReview',id=reviews[i]['REVIEW_ID']) }}">Remove</a></div>
+                    <p><input type = "hidden" name = "id" value = "{{reviews[i]['REVIEW_ID']}}"></p>
+                    <input type = "submit" value = "update">
+                    </form>
+            
+                {% endfor %}
 
-      </form>
-      <a href="{{ url_for('home') }}">Return to Home</a>
+            </form>
+            <a href="{{ url_for('home') }}">Return to Home</a>
+          </div>
+        </div>
    </body>
 </html>

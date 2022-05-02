@@ -1,32 +1,39 @@
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/styles.css') }}">
 <html>
-   <body>
-      <form action = "http://localhost:5000/review" method = "post">
-         <h1>Reviews</h1>
-         
-         <select name="selectedMovie" id="selectedMovie">
-            <optgroup>
-              {% for movie in movies %}
-               <option value='{{movie["MOVIE_ID"]}}'>{{movie["NAME"]}}</option>
-              {% endfor %}
-            </optgroup>
-         </select>
-         
-         <p>Enter review:</p>
-         <p><input type = "text" name = "review_content" /></p>
-         <p>Enter rating:</p>
-         <select name="rating" id="selectedMovie">
-            <optgroup>
-               <option value='5'>5</option>
-               <option value='4'>4</option>
-               <option value='3'>3</option>
-               <option value='2'>2</option>
-               <option value='1'>1</option>
-            </optgroup>
-         </select>
-         <!--<p><input type = "text" name = "rating" /></p>-->
-         <p><input type = "submit" value = "submit" /></p>
-        <!---- <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{ url_for('review',title=title) }}">Add to Wishlist</a></div>-->
-      </form>
-      <a href="{{ url_for('home') }}">Return to Home</a>
+   <body class="bg-dark py-5">
+      <div class="container px-4 px-lg-5 my-5">
+         <div class="text-center text-white">
+            <form action = "http://localhost:5000/review" method = "post">
+               <h1>Reviews</h1>
+               
+               <select name="selectedMovie" id="selectedMovie">
+                  <optgroup>
+                  {% for movie in movies %}
+                     <option value='{{movie["MOVIE_ID"]}}'>{{movie["NAME"]}}</option>
+                  {% endfor %}
+                  </optgroup>
+               </select>
+               
+               <p>Enter review:</p>
+               <p><input type = "text" name = "review_content" /></p>
+               <p>Enter rating:</p>
+               <select name="rating" id="selectedMovie">
+                  <optgroup>
+                     <option value='5'>5</option>
+                     <option value='4'>4</option>
+                     <option value='3'>3</option>
+                     <option value='2'>2</option>
+                     <option value='1'>1</option>
+                  </optgroup>
+               </select>
+               <br>
+               <br>
+               <!--<p><input type = "text" name = "rating" /></p>-->
+               <p><input type = "submit" value = "submit" /></p>
+            <!---- <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{ url_for('review',title=title) }}">Add to Wishlist</a></div>-->
+            </form>
+            <a href="{{ url_for('home') }}">Return to Home</a>
+         </div>
+      </div>
    </body>
 </html>
