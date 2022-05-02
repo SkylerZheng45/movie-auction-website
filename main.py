@@ -44,7 +44,7 @@ def home():
 def addToCart(cardNum):
    #adding to cart try catching to see if logged in
    global cart
-   cart = []
+   # cart = []
    try: 
       cart.append(movieInfoCards[int(cardNum)])
       print("Cart contents with username: ",username,cart)
@@ -148,10 +148,8 @@ def mymovieauctions():
       print("Number of Movies queryed", len(movieInfoCards))
       return render_template('mymovieauctions.html',movieInfo = movieInfoCards)
 
-# code starting position - Sixing Zheng
 
-# login functions
-# After login and sign up correctly, go to this function
+# login
 @app.route('/<name>')
 def success(name):
    global movieInfoCards 
@@ -161,17 +159,14 @@ def success(name):
       movieInfoCards = cur.fetchall()
    return render_template('index.html', username = name,cartCounter=len(cart), movieInfo = movieInfoCards)
 
-# route to the login page
 @app.route('/login')
 def login_page():
    return render_template('login.html')
 
-# route to the login page with custom message
 @app.route('/login/<msg>')
 def login_again(msg):
    return render_template('login.html', msg=msg)
 
-# gettting the information for login and check for password
 @app.route('/login',methods = ['POST', 'GET'])
 def login():
    email = request.form['email']
@@ -195,17 +190,14 @@ def login():
       return redirect(url_for('login_again', msg='Wrong information entered'))
 
 #signup
-# route to the sign up page
 @app.route('/signup')
 def signup_page():
    return render_template('signup.html')
 
-# route to the sign up page with custom message
 @app.route('/signup/<msg>')
 def signup_again(msg):
    return render_template('signup.html', msg=msg)
 
-# getting the information for the form submmitted with the sign up page
 @app.route('/signup',methods = ['POST', 'GET'])
 def signup():
    password = request.form['password']
@@ -244,6 +236,7 @@ def signup():
             app.logger.info(rows[0]['user_id'])
             cur.execute(f"INSERT INTO WISHLIST (USER_ID) VALUES('{global_user_id}');")
             con.commit()
+            # resp.set_cookie('user_id',rows[0]['user_id'])
          return redirect(url_for('success',name = user))
       except Exception as e:
          con.rollback()
@@ -253,7 +246,7 @@ def signup():
       return redirect(url_for('signup_again', msg='Passwords do not match.'))
 
 # user_profile
-# route to user profile with feedback message
+# with feedback message
 @app.route('/user_profile')
 def user_profile_page():
    # get account info from the database
@@ -274,7 +267,7 @@ def user_profile_page():
       zip_code = rows[0]['zip_code']
    return render_template('user_profile.html',username=username, email=email, age=age, card=card, card_exp_date=card_exp_date, billing_addr=billing_addr, zip_code=zip_code)
 
-# route to the user profile without feedback message
+# without feedback message
 @app.route('/user_profile/<msg>')
 def user_profile_after_update(msg):
    # get account info from the database
@@ -344,8 +337,6 @@ def delete_user():
       cur.execute("SELECT * FROM MOVIEINFO LIMIT 8")
       movieInfoCards = cur.fetchall()
    return render_template('index.html',cart=cart, cartCounter=len(cart),movieInfo = movieInfoCards)
-
-# code ending position - Sixing Zheng
 
 @app.route('/index/<title>', methods = ['POST', 'GET'])
 def addToWishlist(title):
@@ -488,6 +479,10 @@ def deleteFromReview(id):
 
    return redirect(url_for('myreviews'))
 
+#Charles Tran
+#Code Starts Here
+#Queries for all of the user data in order to process a transaction
+#Shows data from cart
 @app.route('/checkout',methods = ['POST', 'GET'])
 def checkout():
    # get account info from the database
@@ -496,23 +491,20 @@ def checkout():
       cur = con.cursor()
       cur.execute(f"select * from USER where user_id = '{global_user_id}';")
       rows = cur.fetchall()
-      app.logger.info(global_user_id)
-      app.logger.info(len(rows))
       username = rows[0]['username']
       email = rows[0]['email']
       card = rows[0]['card']
       card_exp_date = rows[0]['card_exp_date']
       billing_addr = rows[0]['billing_addr']
       zip_code = rows[0]['zip_code']
-      # print(cart)
-      while(len(cart)<8):
-         cart.append(('','','','',''))
       
 
    return render_template('checkout.html',username=username, email=email, card=card, card_exp_date=card_exp_date, billing_addr=billing_addr, zip_code=zip_code,cart = cart)
 
 
 
+#Processes a transaction by adding the movie from the cart into the transactions table.
+#Then the movie is deleted from the movie database since it has been purchased.
 @app.route('/transaction')
 def transaction():
    with sql.connect("MovieAuctionDB.db") as con:
@@ -530,21 +522,21 @@ def transaction():
             for i in range(len(cart)):
                if((cart[0][1])!=''):
                   print("Deleting "+cart[0][1])
-                  # cur.execute("DELETE FROM MOVIEINFO WHERE MOVIE_AUC_ID == cart[0][0]")
+                  # cur.execute("DELETE FROM MOVIEINFO WHERE MOVIE_ID == "+str(cart[0][0])+";")
                   # con.commit()
                   cart.pop(0)
                else:
                   cart.pop(0)
-            return transactionlog()
+            return transactionlog("Your Transaction was Successful")
          except Exception as e:
             con.rollback()
             app.logger.info(e)
             msg = "Your Transaction was not successful"
             return render_template('transaction.html',cart = cart,msg=msg)
       
-      
+#Provides a log of transactions that the user has done.      
 @app.route('/transactionlog')
-def transactionlog():
+def transactionlog(msg=""):
    with sql.connect("MovieAuctionDB.db") as con:
       cur = con.cursor()   
       cur.execute("SELECT * FROM TRANSACTIONS WHERE USER_ID = "+str(global_user_id)+";")
@@ -560,12 +552,8 @@ def transactionlog():
             # print(i[0])
             transaction.append(i)
 
-      print(transaction)
-      while(len(transaction)<8):
-         transaction.append(('','','','',''))
-      msg = ""
       return render_template('transaction.html',cart = transaction,msg=msg)
-
+#Charles Tran Code Ends Here
 
 if __name__ == '__main__':
    app.run(debug = True)
