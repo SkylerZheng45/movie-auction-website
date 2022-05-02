@@ -79,7 +79,7 @@ def addMovie():
             if len(imgurl)==0:
                cur.execute("INSERT INTO MOVIEINFO (NAME,YEAR,DESC,PRICE,USER_ID) VALUES(?,?,?,?,?);",(name,year,desc,price,global_user_id))
             else:         
-               cur.execute("INSERT INTO MOVIEINFO (NAME,YEAR,DESC,PRICE,IMGURL,USER_ID) VALUES(?,?,?,?,?);",(name,year,desc,price,imgurl,global_user_id))
+               cur.execute("INSERT INTO MOVIEINFO (NAME,YEAR,DESC,PRICE,IMGURL,USER_ID) VALUES(?,?,?,?,?,?);",(name,year,desc,price,imgurl,global_user_id))
             con.commit()
             msg = "Record successfully added"
          return redirect(url_for('success',name = username))
@@ -117,6 +117,25 @@ def changeMoviePrice(movieID):
             con.commit()
             msg = "Record successfully added"
          return redirect(url_for('mymovies'))
+      except Exception as e:
+         con.rollback()
+         app.logger.info(e)
+         return redirect(url_for('success',name = username))
+   else:
+      return redirect(url_for('success',name = username))
+
+@app.route('/addMovieAuctionBid/<auctionID>',methods = ['POST', 'GET'])
+def addMovieAuctionBid(auctionID):
+   price = request.form['price']
+   print("NEW PRICE REQUESTED ON AN AUCTION",price,auctionID)
+   if len(price)>0:
+      try:
+         with sql.connect("MovieAuctionDB.db") as con:    
+            cur = con.cursor()  
+            cur.execute("UPDATE MOVIEAUCTION SET PRICE = ? WHERE MOVIE_AUC_ID = ? ;",(price,auctionID))
+            con.commit()
+            print("Record successfully updated")
+         return redirect(url_for('showMovieAuction',username = username))
       except Exception as e:
          con.rollback()
          app.logger.info(e)
@@ -216,7 +235,7 @@ def addMovieAuction():
             if len(imgurl)==0:
                cur.execute("INSERT INTO MOVIEINFO (NAME,YEAR,DESC,PRICE,USER_ID) VALUES(?,?,?,?,?);",(name,year,desc,price,global_user_id))
             else:         
-               cur.execute("INSERT INTO MOVIEINFO (NAME,YEAR,DESC,PRICE,IMGURL,USER_ID) VALUES(?,?,?,?,?);",(name,year,desc,price,imgurl,global_user_id))
+               cur.execute("INSERT INTO MOVIEINFO (NAME,YEAR,DESC,PRICE,IMGURL,USER_ID) VALUES(?,?,?,?,?,?);",(name,year,desc,price,imgurl,global_user_id))
             cur.execute("SELECT last_insert_rowid();")
             movieID = cur.fetchall()    
             msg = "Record successfully added"
