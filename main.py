@@ -133,6 +133,38 @@ def showAllProducts():
       print("Number of Movies queryed", len(movieInfoCards))
       return render_template('all_products.html',cart=cart, cartCounter=len(cart),movieInfo = movieInfoCards)
 
+@app.route('/showMovieAuction')
+def showMovieAuction():
+   with sql.connect("MovieAuctionDB.db") as con:
+      cur = con.cursor()
+      cur.execute(f"SELECT * FROM MOVIEINFO,MOVIEAUCTION WHERE MOVIEINFO.MOVIE_ID = MOVIEAUCTION.MOVIE_ID;")
+      movieInfoCards = cur.fetchall()
+      temp = []
+      for i in movieInfoCards:
+         temp.append(list(i))
+      movieInfoCards = temp
+      print("Number of Movies queryed", len(movieInfoCards))
+      print(movieInfoCards)
+      for i in range(0,len(movieInfoCards)):
+         timeleft = datetime.now() - datetime.strptime(str(movieInfoCards[i][16]),'%Y-%m-%d %H:%M')
+         movieInfoCards[i].append(timeleft)
+      return render_template('all_movie_auctions.html',username=username,movieInfo = movieInfoCards)
+
+@app.route('/removeMovieAuction/<auctionID>',methods = ['POST', 'GET'])
+def removeMovieAuction(auctionID):
+   try:
+      with sql.connect("MovieAuctionDB.db") as con:
+         cur = con.cursor()
+         print('Auction ID =',auctionID)
+         cur.execute("DELETE FROM MOVIEAUCTION WHERE MOVIE_AUC_ID = ? ;",(auctionID,))
+         con.commit()
+         msg = "Movie Successfully Removed"
+      return redirect(url_for('mymovieauctions'))
+   except Exception as e:
+      con.rollback()
+      app.logger.info(e)
+      return redirect(url_for('mymovieauctions'))
+
 @app.route('/mymovies')
 def mymovies():
    with sql.connect("MovieAuctionDB.db") as con:
@@ -158,6 +190,7 @@ def mymovieauctions():
          timeleft = datetime.now() - datetime.strptime(str(movieInfoCards[i][16]),'%Y-%m-%d %H:%M')
          movieInfoCards[i].append(timeleft)
       return render_template('mymovieauctions.html',username=username,movieInfo = movieInfoCards)
+      
 @app.route('/addMovieAuction')
 def addMovieAuctionPage():
    return render_template('movie_auction_entry.html', msg='',name2=username)
