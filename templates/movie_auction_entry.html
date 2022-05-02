@@ -1,0 +1,34 @@
+<html>
+   <body>
+      <h2>{{msg}}</h2>
+      <form action = "http://localhost:5000/addMovieAuction" method = "post">
+         <h1>Add Movie to Auction</h1>
+         <p>Movie Name:</p>
+         <p><input type = "text" name = "name" /></p>
+         <p>Movie year release:</p>
+         <p><input type = "number" name = "year" /></p>
+         <p>Movie Description:</p>
+         <p><input type = "text" name = "desc" /></p>
+         <p>Movie Starting Bid Price:</p>
+         <p><input type = "number" step="0.01" name = "price" /></p>
+         <p>Optional Image Url for picture:</p>
+         <p><input type = "url" name = "imgurl" /></p>
+         <p>Date Auction Item Ends:</p>
+         <p><input type = "date" name = "date" /></p>
+         <p>Time that Auction Item Ends:</p>
+         <p><input type = "time" name = "time" /></p>
+         <p><input type = "submit" value = "submit"/></p>
+      </form>
+      <a href="{{ url_for('success',name=name2) }}">Return to Home</a>
+   </body> 
+</html>
+
+<!-- CREATE TABLE MOVIEAUCTION(
+    MOVIE_AUC_ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    USER_ID REFERENCES USER(USER_ID),
+    TITLE CHAR(50) NOT NULL,
+    YEAR INT NOT NULL,
+    DESC TEXT NOT NULL,
+    PRICE FLOAT NOT NULL,
+    MOVIE_ID REFERENCES MOVIEINFO(MOVIE_ID),
+); -->

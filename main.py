@@ -1,10 +1,13 @@
 #from crypt import methods
 import email
 from glob import glob
+from locale import currency
 import logging
+from pickle import FALSE
 import sys
 from flask import Flask, redirect, url_for, request, render_template, make_response
 import sqlite3 as sql
+from datetime import datetime
 app = Flask(__name__)
 logging.basicConfig(level=logging.DEBUG)
 #unique user_id
@@ -37,8 +40,7 @@ def home():
    except:
       return render_template('index.html',cart=cart, cartCounter=len(cart),movieInfo = movieInfoCards)
 
-
-
+#Joey Chou Code starts here 
 #adding item to cart
 @app.route('/addToCart/<cardNum>', methods=['GET'])
 def addToCart(cardNum):
@@ -59,7 +61,7 @@ def addToCart(cardNum):
 
 @app.route('/addMovie')
 def addMoviePage():
-   return render_template('movie_entry.html', msg='')
+   return render_template('movie_entry.html',msg='',name2=username)
 
 #adding an item for sale 
 @app.route('/addMovie',methods = ['POST', 'GET'])
@@ -91,12 +93,17 @@ def addMovie():
 
 @app.route('/removeMovie/<movieID>',methods = ['POST', 'GET'])
 def removeMovie(movieID):
-   with sql.connect("MovieAuctionDB.db") as con:
-      cur = con.cursor()
-      print('MOVIE ID =',movieID)
-      cur.execute("DELETE FROM MOVIEINFO WHERE MOVIE_ID = ? ;",(movieID,))
-      con.commit()
-      msg = "Movie Successfully Removed"
+   try:
+      with sql.connect("MovieAuctionDB.db") as con:
+         cur = con.cursor()
+         print('MOVIE ID =',movieID)
+         cur.execute("DELETE FROM MOVIEINFO WHERE MOVIE_ID = ? ;",(movieID,))
+         con.commit()
+         msg = "Movie Successfully Removed"
+      return redirect(url_for('mymovies'))
+   except Exception as e:
+      con.rollback()
+      app.logger.info(e)
       return redirect(url_for('mymovies'))
 
 @app.route('/changeMoviePrice/<movieID>',methods = ['POST', 'GET'])
@@ -136,15 +143,63 @@ def mymovies():
       print("Number of Movies queryed", len(movieInfoCards))
       return render_template('mymovies.html',username=username,movieInfo = movieInfoCards)
 
-
 @app.route('/mymovieauctions')
 def mymovieauctions():
    with sql.connect("MovieAuctionDB.db") as con:
       cur = con.cursor()
-      cur.execute("SELECT * FROM MOVIEAUCTION WHERE USER_ID = ?", (global_user_id))
+      cur.execute(f"SELECT * FROM MOVIEINFO,MOVIEAUCTION WHERE MOVIEINFO.USER_ID={global_user_id} AND MOVIEAUCTION.USER_ID={global_user_id} AND MOVIEINFO.MOVIE_ID = MOVIEAUCTION.MOVIE_ID;")
       movieInfoCards = cur.fetchall()
+      temp = []
+      for i in movieInfoCards:
+         temp.append(list(i))
+      movieInfoCards = temp
       print("Number of Movies queryed", len(movieInfoCards))
-      return render_template('mymovieauctions.html',movieInfo = movieInfoCards)
+      print(movieInfoCards)
+      for i in range(0,len(movieInfoCards)):
+         timeleft = datetime.now() - datetime.strptime(str(movieInfoCards[i][16]),'%Y-%m-%d %H:%M')
+         movieInfoCards[i].append(timeleft)
+      return render_template('mymovieauctions.html',username=username,movieInfo = movieInfoCards)
+@app.route('/addMovieAuction')
+def addMovieAuctionPage():
+   return render_template('movie_auction_entry.html', msg='',name2=username)
+
+#adding an item for sale 
+@app.route('/addMovieAuction',methods = ['POST', 'GET'])
+def addMovieAuction():
+   global cart 
+   cart = []
+   name = request.form['name']
+   year = request.form['year']
+   desc = request.form['desc']
+   price = request.form['price']
+   imgurl = request.form['imgurl']
+   date = request.form['date']
+   time = request.form['time']
+   print("this is the date and time", date,time)
+   if len(name) != 0 and len(year) != 0 and len(desc) != 0 and len(price)!=0 and len(date)!=0 and len(time)!=0 :
+      try:
+         with sql.connect("MovieAuctionDB.db") as con:
+            # insert info
+            cur = con.cursor()
+            if len(imgurl)==0:
+               cur.execute("INSERT INTO MOVIEINFO (NAME,YEAR,DESC,PRICE,USER_ID) VALUES(?,?,?,?,?);",(name,year,desc,price,global_user_id))
+            else:         
+               cur.execute("INSERT INTO MOVIEINFO (NAME,YEAR,DESC,PRICE,IMGURL,USER_ID) VALUES(?,?,?,?,?);",(name,year,desc,price,imgurl,global_user_id))
+            cur.execute("SELECT last_insert_rowid();")
+            movieID = cur.fetchall()    
+            msg = "Record successfully added"
+            cur.execute("INSERT INTO MOVIEAUCTION (TITLE,YEAR,DESC,PRICE,USER_ID,BUY_NOW,SOLD,TIME_END,MOVIE_ID) VALUES(?,?,?,?,?,?,?,?,?)",(name,year,desc,float(price)/4,global_user_id,'FALSE','FALSE',date+" "+time,movieID[0][0]))
+            con.commit()
+         return redirect(url_for('success',name = username))
+      except Exception as e:
+         con.rollback()
+         print(e)
+         app.logger.info(e)
+         return render_template('movie_auction_entry.html', msg='Error in entered information exception found')
+   else:
+      return render_template('movie_auction_entry.html', msg='Error in entered information, Please fill out again')
+
+
 
 # code starting position - Sixing Zheng
 
