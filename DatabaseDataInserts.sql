@@ -37,6 +37,7 @@ INSERT INTO MOVIEINFO (NAME,YEAR,DESC,PRICE,IMGURL) VALUES
 ("MORTAL KOMBAT",2021,"In Mortal Kombat, MMA fighter Cole Young, accustomed to taking a beating for money, is unaware of his heritage--or why Outworld's Emperor Shang Tsung has sent his best warrior, Sub-Zero, an otherworldly Cryomancer, to hunt Cole down.",49.99,"https://resizing.flixster.com/lR9jf8QkbCVtqy8Pg_-fntKRi0U=/206x305/v2/https://resizing.flixster.com/7O6kGFWz7_XiWOjMBTrERl2glDA=/ems.ZW1zLXByZC1hc3NldHMvbW92aWVzL2Q1MjgzODBhLTdmOGItNGNkNC1iOTQ0LTMxNzI0MzZkMWY1Ni5wbmc=");
 
 
+
 UPDATE MOVIEINFO SET 
 IMGURL="https://resizing.flixster.com/zl240CPBBowAZfldk-8FaX4dGuw=/206x305/v2/https://flxt.tmsimg.com/NowShowing/120448/120448_aa.jpg"
 where MOVIE_ID=8;
