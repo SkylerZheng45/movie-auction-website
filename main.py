@@ -24,7 +24,7 @@ def home():
    global movieInfoCards 
    with sql.connect("MovieAuctionDB.db") as con:
       cur = con.cursor()
-      cur.execute("SELECT * FROM MOVIEINFO LIMIT 8")
+      cur.execute("SELECT * FROM MOVIEINFO")
       movieInfoCards = cur.fetchall()
    # find username if global_user_id is defined
    print(movieInfoCards)
